@@ -1,6 +1,7 @@
+/** @jsxImportSource @emotion/react */
 "use client";
-
 import React from "react";
+import { css } from "@emotion/react";
 
 import { useLocale } from "@/hooks/useLocale";
 
@@ -11,9 +12,17 @@ export const CalendarHeader = () => {
 		year: "numeric",
 	}).format(new Date());
 
+	const styles = {
+		header: css({
+			padding: "0.5rem",
+		}),
+	};
+
 	return (
-		<header>
-			<h1 className="visually-hidden">Calendar</h1>
+		<header css={styles.header}>
+			<h1 hidden aria-hidden="false">
+				Calendar
+			</h1>
 			<time dateTime={new Date().toDateString()}>{intlToday}</time>
 		</header>
 	);

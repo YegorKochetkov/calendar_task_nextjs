@@ -1,5 +1,13 @@
+/** @jsxImportSource @emotion/react */
 import React from "react";
+import { css } from "@emotion/react";
 
 export const Sidebar = () => {
-	return <div>Sidebar</div>;
+	const styles = {
+		sidebar: css({
+			paddingInline: "0.5rem",
+		}),
+	};
+
+	return <aside css={styles.sidebar}>Sidebar</aside>;
 };

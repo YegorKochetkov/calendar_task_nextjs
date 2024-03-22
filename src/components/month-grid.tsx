@@ -17,7 +17,7 @@ export const MonthGrid = ({ monthGrid }: { monthGrid: Date[][] }) => {
 	};
 
 	return (
-		<div css={styles.monthGrid}>
+		<section css={styles.monthGrid}>
 			{monthGrid.map((week, weekIndex) => (
 				<React.Fragment key={weekIndex}>
 					{week.map((day, dayIndex) => (
@@ -25,6 +25,6 @@ export const MonthGrid = ({ monthGrid }: { monthGrid: Date[][] }) => {
 					))}
 				</React.Fragment>
 			))}
-		</div>
+		</section>
 	);
 };
