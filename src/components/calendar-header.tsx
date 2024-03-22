@@ -14,7 +14,7 @@ export const CalendarHeader = () => {
 	return (
 		<header>
 			<h1 className="visually-hidden">Calendar</h1>
-			<time dateTime={new Date().toISOString()}>{intlToday}</time>
+			<time dateTime={new Date().toDateString()}>{intlToday}</time>
 		</header>
 	);
 };

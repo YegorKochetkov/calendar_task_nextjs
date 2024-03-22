@@ -1,5 +1,7 @@
+/** @jsxImportSource @emotion/react */
 "use client";
 import React from "react";
+import { css } from "@emotion/react";
 
 import { Sidebar } from "@/components/sidebar";
 import { MonthGrid } from "@/components/month-grid";
@@ -11,13 +13,15 @@ export default function Home() {
 		getMonthGrid(),
 	);
 
+	const styles = {
+		main: css({
+			display: "flex",
+			flex: "1 1 0%",
+		}),
+	};
+
 	return (
-		<main
-			style={{
-				display: "flex",
-				flex: "1 1 0%",
-			}}
-		>
+		<main css={styles.main}>
 			<Sidebar />
 			<MonthGrid monthGrid={currentMonthGrid} />
 		</main>
