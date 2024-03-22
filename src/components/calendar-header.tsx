@@ -5,18 +5,18 @@ import { css } from "@emotion/react";
 
 import { useLocale } from "@/hooks/useLocale";
 
+const styles = {
+	header: css({
+		padding: "0.5rem",
+	}),
+};
+
 export const CalendarHeader = () => {
 	const locale = useLocale();
 	const intlToday = new Intl.DateTimeFormat(locale, {
 		month: "long",
 		year: "numeric",
 	}).format(new Date());
-
-	const styles = {
-		header: css({
-			padding: "0.5rem",
-		}),
-	};
 
 	return (
 		<header css={styles.header}>

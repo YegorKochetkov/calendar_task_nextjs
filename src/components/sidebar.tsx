@@ -2,12 +2,12 @@
 import React from "react";
 import { css } from "@emotion/react";
 
-export const Sidebar = () => {
-	const styles = {
-		sidebar: css({
-			paddingInline: "0.5rem",
-		}),
-	};
+const styles = {
+	sidebar: css({
+		paddingInline: "0.5rem",
+	}),
+};
 
+export const Sidebar = () => {
 	return <aside css={styles.sidebar}>Sidebar</aside>;
 };
