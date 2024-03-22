@@ -21,6 +21,8 @@ export const Day = ({ day }: { day: Date }) => {
 		dayFormat = dayFormatNameDigits;
 	}
 
+	const isToday = new Date().toDateString() === day.toDateString();
+
 	const styles = {
 		dayCell: css({
 			display: "flex",
@@ -37,12 +39,21 @@ export const Day = ({ day }: { day: Date }) => {
 			flexDirection: "row",
 			gap: "0.25rem",
 		}),
+
+		todayTime: css({
+			backgroundColor: "blue",
+			color: "white",
+			borderRadius: "50%",
+			padding: "0.25rem",
+		}),
 	};
 
 	return (
 		<div css={styles.dayCell}>
 			<header css={styles.dayCellHeader}>
-				<time dateTime={day.toDateString()}>{dayFormat.format(day)}</time>
+				<time css={isToday && styles.todayTime} dateTime={day.toDateString()}>
+					{dayFormat.format(day)}
+				</time>
 			</header>
 		</div>
 	);
