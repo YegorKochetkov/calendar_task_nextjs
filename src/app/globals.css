@@ -1,0 +1,18 @@
+@import url("./css-normalize.css");
+
+:where([aria-hidden='false' i][hidden]) {
+  display: initial;
+}
+
+:is(
+  [aria-hidden='false' i][hidden]:not(:focus):not(:active),
+  .visually-hidden
+) {
+  all: initial;
+  clip-path: path('');
+  contain: content;
+  height: 1px;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
