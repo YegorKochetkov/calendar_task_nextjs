@@ -64,17 +64,20 @@ export const isFirstDayOfMonth = (date: Date) => {
 // 	return days;
 // };
 
-// export const getWeekDaysName = (locale: string) => {
-// 	const dayFormat = new Intl.DateTimeFormat(locale, {
-// 		weekday: "short",
-// 	});
+export const getWeekDaysName = (
+	locale: string,
+	formatOptions?: Intl.DateTimeFormatOptions["weekday"],
+) => {
+	const dayFormat = new Intl.DateTimeFormat(locale, {
+		weekday: formatOptions,
+	});
 
-// 	const days = Array.from({ length: 7 }, (_, index) =>
-// 		dayFormat.format(new Date(0, 0, index)),
-// 	);
+	const days = Array.from({ length: 7 }, (_, index) =>
+		dayFormat.format(new Date(0, 0, index)),
+	);
 
-// 	return days;
-// };
+	return days;
+};
 
 // export const getWeekLastDate = (date: Date) => {
 // 	const day = date.getDay();
