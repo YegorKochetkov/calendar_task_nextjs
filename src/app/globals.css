@@ -1,5 +1,6 @@
-@layer reset, base;
+@layer normalize, base;
 @import url("./css-normalize.css");
+@import url("@/fonts/fontello.css");
 
 @layer base {
   :where([aria-hidden='false'][hidden]) {
@@ -24,4 +25,28 @@
     flex-direction: column;
     padding: 0.25rem;
   }  
+
+  .btn {
+    display: grid;
+    place-items: center;
+    
+    padding-inline: 0.5rem;
+    padding-block: 0.25rem;
+
+    border: none;
+		border-radius: 0.25rem;
+    
+    transition: background-color;
+    transition-duration: 250ms;
+    
+    cursor: pointer;
+    
+    &:hover { 
+      outline: 2px solid lightgrey;
+    }
+
+    &:active {
+      transform: scale(0.97);
+    }
+  }
 }
