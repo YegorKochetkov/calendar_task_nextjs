@@ -9,7 +9,7 @@ const myFont = localFont({
 
 import "./globals.css";
 
-import { CalendarHeader } from "@/components/calendar-header";
+import { CalendarHeader } from "@/components/calendarHeader";
 
 const inter = Inter({ subsets: ["latin"] });
 

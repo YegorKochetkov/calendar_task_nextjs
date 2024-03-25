@@ -31,7 +31,7 @@ const styles = {
 		gap: "0.25rem",
 	}),
 
-	ctrlMonth: css({
+	ctrlDate: css({
 		display: "flex",
 		gap: "0.25rem",
 		"& > button:first-of-type": {
@@ -53,7 +53,7 @@ export const CalendarHeader = () => {
 				Calendar
 			</h1>
 			<span className="icon-calendar" />
-			<div css={styles.ctrlMonth}>
+			<div css={styles.ctrlDate}>
 				<button type="button" className="btn" title="Go to today">
 					Today
 					<span hidden aria-hidden="false">

@@ -4,7 +4,7 @@ import React from "react";
 import { css } from "@emotion/react";
 
 import { Sidebar } from "@/components/sidebar";
-import { MonthGrid } from "@/components/month-grid";
+import { MonthGrid } from "@/components/monthGrid";
 
 import { getMonthGrid } from "@/lib/utils";
 

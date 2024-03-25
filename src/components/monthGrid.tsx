@@ -3,7 +3,7 @@ import React from "react";
 import { css } from "@emotion/react";
 
 import { Day } from "./day";
-import { MonthGridHeader } from "./month-grid-header";
+import { MonthGridHeader } from "./monthGridHeader";
 
 import { calendarColumns } from "@/lib/utils";
 
