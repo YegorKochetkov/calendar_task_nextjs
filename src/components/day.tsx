@@ -9,7 +9,7 @@ const styles = {
 	dayCell: css({
 		display: "flex",
 		flexDirection: "column",
-		border: "1px solid lightgrey",
+		borderInlineEnd: "1px solid lightgrey",
 		fontSize: "0.875rem",
 		lineHeight: "1.25rem",
 		paddingInline: "0.5rem",

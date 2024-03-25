@@ -8,10 +8,16 @@ import { calendarColumns, getMonthGrid } from "@/lib/utils";
 import { SelectedDateCtx } from "@/context/selectedDateCtx";
 
 const styles = {
-	monthGrid: css({
+	weekRow: css({
 		display: "grid",
 		flex: "1 1 0%",
 		gridTemplateColumns: `repeat(${calendarColumns}, minmax(0, 1fr))`,
+		borderBlockEnd: "1px solid lightgrey",
+		borderInlineStart: "1px solid lightgrey",
+	}),
+
+	firstWeekRow: css({
+		borderBlockStart: "1px solid lightgrey",
 	}),
 };
 
@@ -21,10 +27,10 @@ export const MonthGridCells = () => {
 
 	return (
 		<>
-			{monthGrid.map((week, weekIndex) => (
+			{monthGrid.map((weekRow, weekIndex) => (
 				<React.Fragment key={weekIndex}>
-					<div css={styles.monthGrid}>
-						{week.map((day, dayIndex) => (
+					<div css={[styles.weekRow, weekIndex === 0 && styles.firstWeekRow]}>
+						{weekRow.map((day, dayIndex) => (
 							<Day key={dayIndex} day={day} />
 						))}
 					</div>

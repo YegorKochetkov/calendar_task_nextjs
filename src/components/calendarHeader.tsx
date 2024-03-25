@@ -13,10 +13,12 @@ const styles = {
 		alignItems: "center",
 		gap: "1.25rem",
 		padding: "0.5rem",
+		paddingBlockEnd: "1rem",
 		marginBlockEnd: "0.5rem",
 		"& button": {
 			height: "2rem",
 		},
+		borderBlockEnd: "1px solid lightgrey",
 	}),
 
 	date: css({
