@@ -2,10 +2,9 @@ export const calendarRows = 6;
 export const calendarColumns = 7;
 export const weekStartDayIndex = 1; // use 0 for week starts on Sunday
 
-export const getMonthGrid = (
-	monthIndex = new Date().getMonth(),
-	year = new Date().getFullYear(),
-) => {
+export const getMonthGrid = (date: string) => {
+	const year = new Date(date).getFullYear();
+	const monthIndex = new Date(date).getMonth();
 	const firstWeekDayOfMonth = getFirstWeekDayOfMonth(year, monthIndex);
 	let currentDayInGrid = weekStartDayIndex - firstWeekDayOfMonth;
 
