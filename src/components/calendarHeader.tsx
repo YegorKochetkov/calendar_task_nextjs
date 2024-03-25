@@ -4,6 +4,7 @@ import React from "react";
 import { css } from "@emotion/react";
 
 import { useLocale } from "@/hooks/useLocale";
+import { SelectedDateCtx } from "@/context/selectedDateCtx";
 
 const styles = {
 	header: css({
@@ -42,10 +43,28 @@ const styles = {
 
 export const CalendarHeader = () => {
 	const locale = useLocale();
+	const { date, updateDate } = React.useContext(SelectedDateCtx);
+	const currentDate = new Date(date);
 	const intlToday = new Intl.DateTimeFormat(locale, {
 		month: "long",
 		year: "numeric",
-	}).format(new Date());
+	}).format(currentDate);
+
+	const handleNextMonth = () => {
+		currentDate.setMonth(currentDate.getMonth() + 1);
+		updateDate(currentDate.toISOString());
+	};
+
+	const handlePrevMonth = () => {
+		currentDate.setMonth(currentDate.getMonth() - 1);
+		updateDate(currentDate.toISOString());
+	};
+
+	const handleGoToToday = () => {
+		currentDate.setMonth(new Date().getMonth());
+		currentDate.setFullYear(new Date().getFullYear());
+		updateDate(currentDate.toISOString());
+	};
 
 	return (
 		<header css={styles.header}>
@@ -54,7 +73,12 @@ export const CalendarHeader = () => {
 			</h1>
 			<span className="icon-calendar" />
 			<div css={styles.ctrlDate}>
-				<button type="button" className="btn" title="Go to today">
+				<button
+					type="button"
+					className="btn"
+					title="Go to today"
+					onClick={handleGoToToday}
+				>
 					Today
 					<span hidden aria-hidden="false">
 						view
@@ -65,6 +89,7 @@ export const CalendarHeader = () => {
 					className="btn"
 					css={styles.btn}
 					title="Next month"
+					onClick={handleNextMonth}
 				>
 					<span className="icon-down-open" />
 					<span hidden aria-hidden="false">
@@ -76,6 +101,7 @@ export const CalendarHeader = () => {
 					className="btn"
 					css={styles.btn}
 					title="Previous month"
+					onClick={handlePrevMonth}
 				>
 					<span className="icon-up-open" />
 					<span hidden aria-hidden="false">
