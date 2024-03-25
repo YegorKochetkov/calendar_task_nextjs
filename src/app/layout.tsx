@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Inter } from "next/font/google";
+import type React from "react";
 
 const myFont = localFont({
 	src: "../fonts/fontello.woff2",
@@ -10,6 +11,7 @@ const myFont = localFont({
 import "./globals.css";
 
 import { CalendarHeader } from "@/components/calendarHeader";
+import { ContextWrapper } from "@/context/ContextWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,8 +28,10 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${inter.className} ${myFont.className}`}>
-				<CalendarHeader />
-				{children}
+				<ContextWrapper>
+					<CalendarHeader />
+					{children}
+				</ContextWrapper>
 			</body>
 		</html>
 	);
