@@ -4,9 +4,7 @@ import React from "react";
 import { css } from "@emotion/react";
 
 import { Sidebar } from "@/components/sidebar";
-import { MonthGrid } from "@/components/monthGrid";
-
-import { getMonthGrid } from "@/lib/utils";
+import { MonthGrid } from "@/components/monthGrid/monthGrid";
 
 const styles = {
 	main: css({
@@ -16,14 +14,10 @@ const styles = {
 };
 
 export default function Home() {
-	const [currentMonthGrid, setCurrentMonthGrid] = React.useState(
-		getMonthGrid(),
-	);
-
 	return (
 		<main css={styles.main}>
 			<Sidebar />
-			<MonthGrid monthGrid={currentMonthGrid} />
+			<MonthGrid />
 		</main>
 	);
 }

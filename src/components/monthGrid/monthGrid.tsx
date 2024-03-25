@@ -2,8 +2,9 @@
 import React from "react";
 import { css } from "@emotion/react";
 
-import { Day } from "./day";
+import { Day } from "../day";
 import { MonthGridHeader } from "./monthGridHeader";
+import { MonthGridCells } from "./monthGridCells";
 
 import { calendarColumns } from "@/lib/utils";
 
@@ -21,19 +22,11 @@ const styles = {
 	}),
 };
 
-export const MonthGrid = ({ monthGrid }: { monthGrid: Date[][] }) => {
+export const MonthGrid = () => {
 	return (
 		<section css={styles.monthSection}>
-			{monthGrid.map((week, weekIndex) => (
-				<React.Fragment key={weekIndex}>
-					<MonthGridHeader rowIndex={weekIndex} />
-					<div css={styles.monthGrid}>
-						{week.map((day, dayIndex) => (
-							<Day key={dayIndex} day={day} />
-						))}
-					</div>
-				</React.Fragment>
-			))}
+			<MonthGridHeader />
+			<MonthGridCells />
 		</section>
 	);
 };

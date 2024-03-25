@@ -14,15 +14,15 @@ const styles = {
 	}),
 };
 
-export const MonthGridHeader = ({ rowIndex }: { rowIndex: number }) => {
+export const MonthGridHeader = () => {
 	const locale = useLocale();
 	const weekDays = getWeekDaysName(locale, "short");
 
-	return rowIndex === 0 ? (
+	return (
 		<header css={styles.monthGridHeader}>
 			{weekDays.map((day, index) => (
 				<p key={index}>{day}</p>
 			))}
 		</header>
-	) : null;
+	);
 };
