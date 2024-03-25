@@ -12,8 +12,7 @@ const styles = {
 		borderInlineEnd: "1px solid lightgrey",
 		fontSize: "0.875rem",
 		lineHeight: "1.25rem",
-		paddingInline: "0.5rem",
-		paddingBlock: "0.25rem",
+		padding: "0.25rem",
 	}),
 
 	dayCellHeader: css({
@@ -23,10 +22,13 @@ const styles = {
 	}),
 
 	todayTime: css({
-		backgroundColor: "blue",
+		display: "grid",
+		placeItems: "center",
+		width: "1.5rem",
+		aspectRatio: "1/1",
 		color: "white",
+		backgroundColor: "blue",
 		borderRadius: "50%",
-		padding: "0.25rem",
 	}),
 };
 
