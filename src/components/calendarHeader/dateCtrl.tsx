@@ -33,9 +33,7 @@ export const DateCtrl = () => {
 	};
 
 	const handleGoToToday = () => {
-		currentDate.setMonth(new Date().getMonth());
-		currentDate.setFullYear(new Date().getFullYear());
-		updateDate(currentDate.toISOString());
+		updateDate(new Date().toISOString());
 	};
 
 	return (
