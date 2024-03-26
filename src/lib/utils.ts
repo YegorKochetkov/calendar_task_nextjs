@@ -1,6 +1,6 @@
 export const calendarRows = 6;
 export const calendarColumns = 7;
-export const weekStartDayIndex = 1; // use 0 for week starts on Sunday
+export const weekStartDayIndex = 0;
 
 export const getMonthGrid = (date: string) => {
 	const year = new Date(date).getFullYear();
