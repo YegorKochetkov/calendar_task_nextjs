@@ -10,7 +10,7 @@ const myFont = localFont({
 
 import "./globals.css";
 
-import { CalendarHeader } from "@/components/calendarHeader";
+import { CalendarHeader } from "@/components/calendarHeader/calendarHeader";
 import { ContextWrapper } from "@/context/ContextWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
