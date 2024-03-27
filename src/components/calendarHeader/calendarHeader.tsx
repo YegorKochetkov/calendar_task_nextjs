@@ -4,22 +4,24 @@ import React from "react";
 import { css } from "@emotion/react";
 
 import { DateCtrl } from "./dateCtrl";
-import { SelectedDate } from "./selectedDate";
+import { SelectedDate } from "../shared/selectedDate";
 import { ViewCtrl } from "./viewCtrl";
 
 const styles = {
 	header: css({
 		"--icon-size": "2rem",
 		display: "flex",
+		flexWrap: "wrap",
 		alignItems: "center",
-		gap: "1.25rem",
-		padding: "0.5rem",
-		paddingBlockEnd: "1rem",
-		marginBlockEnd: "0.5rem",
+		gap: "1.75rem",
+		padding: "1.5rem",
+		paddingBlock: "1rem",
 		"& button": {
 			height: "2rem",
 		},
-		borderBlockEnd: "1px solid lightgrey",
+		"@media (max-width: 600px)": {
+			gap: "1rem",
+		},
 	}),
 };
 
@@ -31,7 +33,7 @@ export const CalendarHeader = () => {
 			</h1>
 			<span className="icon-calendar" />
 			<DateCtrl />
-			<SelectedDate />
+			<SelectedDate formatter={{ month: "long", year: "numeric" }} />
 			<ViewCtrl />
 		</header>
 	);
