@@ -11,14 +11,15 @@ const styles = {
 	}),
 };
 
-export const SelectedDate = () => {
+export const SelectedDate = ({
+	formatter,
+}: Record<string, Intl.DateTimeFormatOptions>) => {
 	const locale = useLocale();
 	const { date } = React.useContext(SelectedDateCtx);
 	const currentDate = new Date(date);
-	const intlToday = new Intl.DateTimeFormat(locale, {
-		month: "long",
-		year: "numeric",
-	}).format(currentDate);
+	const intlToday = new Intl.DateTimeFormat(locale, formatter).format(
+		currentDate,
+	);
 
 	return (
 		<time dateTime={new Date().toDateString()} css={styles.date}>
