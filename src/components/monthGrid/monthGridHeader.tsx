@@ -10,7 +10,7 @@ const styles = {
 		display: "grid",
 		justifyItems: "center",
 		gridTemplateColumns: `repeat(${calendarColumns}, minmax(0, 1fr))`,
-		marginBlockEnd: "0.5rem",
+		height: "1.5rem",
 	}),
 };
 

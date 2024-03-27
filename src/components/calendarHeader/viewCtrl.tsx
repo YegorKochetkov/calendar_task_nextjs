@@ -5,7 +5,7 @@ import { css } from "@emotion/react";
 const styles = {
 	view: css({
 		display: "flex",
-		gap: "0.25rem",
+		gap: "0.5rem",
 	}),
 };
 

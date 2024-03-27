@@ -9,7 +9,11 @@ import { MonthGrid } from "@/components/monthGrid/monthGrid";
 const styles = {
 	main: css({
 		display: "flex",
+		flexDirection: "row",
 		flex: "1 1 0%",
+		"@media (max-width: 600px)": {
+			flexDirection: "column",
+		},
 	}),
 };
 
