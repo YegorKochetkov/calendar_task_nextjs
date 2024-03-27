@@ -1,22 +1,12 @@
 "use client";
-import React from "react";
-import { SelectedDateCtx } from "./selectedDateCtx";
+import type React from "react";
+import { SelectedDateProvider } from "./selectedDateCtx";
+import { ModalCtxProvider } from "./modalCtx";
 
 export const ContextWrapper = ({ children }: { children: React.ReactNode }) => {
-	const [date, setDate] = React.useState(new Date().toISOString());
-
-	const updateDate = React.useCallback((newDate: string) => {
-		setDate(newDate);
-	}, []);
-
-  const contextValue = React.useMemo(() => ({
-    date,
-    updateDate
-  }), [date, updateDate]);
-
 	return (
-		<SelectedDateCtx.Provider value={contextValue}>
-			{children}
-		</SelectedDateCtx.Provider>
+		<SelectedDateProvider>
+			<ModalCtxProvider>{children}</ModalCtxProvider>
+		</SelectedDateProvider>
 	);
 };
