@@ -2,8 +2,8 @@
 import React from "react";
 
 export const ModalCtx = React.createContext({
-	showEventModal: false,
-	setShowEventModal: (state: boolean) => {
+	showModal: false,
+	setShowModal: (state: boolean) => {
 		console.debug("modal state ", state);
 	},
 });
@@ -13,23 +13,21 @@ export const ModalCtxProvider = ({
 }: {
 	children: React.ReactNode;
 }) => {
-	const [showEventModal, setShowEventModal] = React.useState(false);
+	const [showModal, setShowModal] = React.useState(false);
 
-	const setShowEventModalCallback = React.useCallback((state: boolean) => {
-		setShowEventModal(state);
+	const setShowModalCallback = React.useCallback((state: boolean) => {
+		setShowModal(state);
 	}, []);
 
-	const eventModalContextValue = React.useMemo(
+	const modalContextValue = React.useMemo(
 		() => ({
-			showEventModal,
-			setShowEventModal: setShowEventModalCallback,
+			showModal,
+			setShowModal: setShowModalCallback,
 		}),
-		[showEventModal, setShowEventModalCallback],
+		[showModal, setShowModalCallback],
 	);
 
 	return (
-		<ModalCtx.Provider value={eventModalContextValue}>
-			{children}
-		</ModalCtx.Provider>
+		<ModalCtx.Provider value={modalContextValue}>{children}</ModalCtx.Provider>
 	);
 };

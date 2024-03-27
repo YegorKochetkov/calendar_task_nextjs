@@ -11,7 +11,7 @@ const styles = {
 
 	ctrlDate: css({
 		display: "flex",
-		gap: "0.25rem",
+		gap: "0.5rem",
 		"& > button:first-of-type": {
 			marginInlineEnd: "1.5rem",
 		},
@@ -22,17 +22,17 @@ export const DateCtrl = () => {
 	const { date, updateDate } = React.useContext(SelectedDateCtx);
 	const currentDate = new Date(date);
 
-	const handleNextMonth = () => {
+	const nextMonthHandler = () => {
 		currentDate.setMonth(currentDate.getMonth() + 1);
 		updateDate(currentDate.toISOString());
 	};
 
-	const handlePrevMonth = () => {
+	const prevMonthHandler = () => {
 		currentDate.setMonth(currentDate.getMonth() - 1);
 		updateDate(currentDate.toISOString());
 	};
 
-	const handleGoToToday = () => {
+	const resetToCurrentDateHandler = () => {
 		updateDate(new Date().toISOString());
 	};
 
@@ -42,7 +42,7 @@ export const DateCtrl = () => {
 				type="button"
 				className="btn"
 				title="Go to today"
-				onClick={handleGoToToday}
+				onClick={resetToCurrentDateHandler}
 			>
 				Today
 				<span hidden aria-hidden="false">
@@ -54,7 +54,7 @@ export const DateCtrl = () => {
 				className="btn"
 				css={styles.btn}
 				title="Next month"
-				onClick={handleNextMonth}
+				onClick={nextMonthHandler}
 			>
 				<span className="icon-down-open" />
 				<span hidden aria-hidden="false">
@@ -66,7 +66,7 @@ export const DateCtrl = () => {
 				className="btn"
 				css={styles.btn}
 				title="Previous month"
-				onClick={handlePrevMonth}
+				onClick={prevMonthHandler}
 			>
 				<span className="icon-up-open" />
 				<span hidden aria-hidden="false">

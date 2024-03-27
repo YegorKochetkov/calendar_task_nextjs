@@ -27,16 +27,16 @@ export const Modal = React.forwardRef(
 		children: React.ReactNode;
 		modalRef: React.MutableRefObject<HTMLDialogElement | null>;
 	}) => {
-		const { showEventModal, setShowEventModal } = React.useContext(ModalCtx);
+		const { showModal, setShowModal } = React.useContext(ModalCtx);
 
 		React.useEffect(() => {
-			if (!showEventModal) {
+			if (!showModal) {
 				return;
 			}
 
 			modalRef.current?.showModal();
-			setShowEventModal(true);
-		}, [showEventModal, setShowEventModal, modalRef]);
+			setShowModal(true);
+		}, [showModal, setShowModal, modalRef]);
 
 		return (
 			<dialog ref={modalRef} css={styles.dialog}>

@@ -39,17 +39,17 @@ const styles = {
 };
 
 export const AddEventModal = () => {
-	const { setShowEventModal } = React.useContext(ModalCtx);
+	const { setShowModal } = React.useContext(ModalCtx);
 	const modalRef = React.useRef<HTMLDialogElement | null>(null);
 
 	const submitModalHandler = () => {
 		modalRef.current?.close();
-		setShowEventModal(false);
+		setShowModal(false);
 	};
 
 	const cancelModalHandler = () => {
 		modalRef.current?.close();
-		setShowEventModal(false);
+		setShowModal(false);
 	};
 
 	const [title, setTitle] = React.useState("");
