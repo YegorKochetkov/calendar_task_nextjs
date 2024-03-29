@@ -5,7 +5,8 @@ import { css } from "@emotion/react";
 
 import { Modal } from "./shared/modal";
 import { SelectedDay } from "./shared/selectedDay";
-import { closeModal } from "@/stores/modalStore";
+import { $modalsState, closeModal } from "@/stores/modalsStore";
+import { useStore } from "@nanostores/react";
 
 const styles = {
   dialogHeader: css({
@@ -40,62 +41,69 @@ const styles = {
 };
 
 export const AddEventModal = () => {
-  const modalRef = React.useRef<HTMLDialogElement | null>(null);
+  const { addEventModal } = useStore($modalsState);
+  const [ openAddEventModal, setOpenAddEventModal ] = React.useState(
+    addEventModal === "show",
+  );
 
   const submitModalHandler = () => {
-    modalRef.current?.close();
-    closeModal();
+    closeModal("addEventModal");
   };
 
   const cancelModalHandler = () => {
-    modalRef.current?.close();
-    closeModal();
+    closeModal("addEventModal");
   };
+
+  React.useEffect(() => {
+    setOpenAddEventModal(addEventModal === "show");
+  }, [ addEventModal ]);
 
   const [ title, setTitle ] = React.useState("");
 
   return (
-    <Modal modalRef={modalRef}>
-      <header css={styles.dialogHeader}>Add Event</header>
-      <form css={styles.dialogForm}>
-        <label>
-          <span>Add event</span>
-          <input
-            type='text'
-            name='title'
-            value={title}
-            onChange={(e) => setTitle(e.target.value.trim())}
-            required
-            autoComplete='off'
+    <Modal isOpen={openAddEventModal}>
+      <div>
+        <header css={styles.dialogHeader}>Add Event</header>
+        <form css={styles.dialogForm}>
+          <label>
+            <span>Add event</span>
+            <input
+              type="text"
+              name="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value.trim())}
+              required
+              autoComplete="off"
+            />
+          </label>
+          <SelectedDay
+            formatter={{
+              day: "numeric",
+              weekday: "long",
+              month: "long",
+              year: "numeric",
+            }}
           />
-        </label>
-        <SelectedDay
-          formatter={{
-            day: "numeric",
-            weekday: "long",
-            month: "long",
-            year: "numeric",
-          }}
-        />
-      </form>
-      <footer css={styles.dialogCtrl}>
-        <button
-          type='button'
-          className='btn'
-          value='save'
-          onClick={submitModalHandler}
-        >
-          Save
-        </button>
-        <button
-          type='button'
-          className='btn'
-          value='cancel'
-          onClick={cancelModalHandler}
-        >
-          Cancel
-        </button>
-      </footer>
+        </form>
+        <footer css={styles.dialogCtrl}>
+          <button
+            type="button"
+            className="btn"
+            value="save"
+            onClick={submitModalHandler}
+          >
+            Save
+          </button>
+          <button
+            type="button"
+            className="btn"
+            value="cancel"
+            onClick={cancelModalHandler}
+          >
+            Cancel
+          </button>
+        </footer>
+      </div>
     </Modal>
   );
 };
