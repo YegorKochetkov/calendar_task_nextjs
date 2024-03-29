@@ -4,7 +4,7 @@ import { css } from "@emotion/react";
 
 import { useLocale } from "@/hooks/useLocale";
 import { isFirstDayOfMonth, isLastDayOfMonth } from "@/lib/utils";
-import { SelectedDateCtx } from "@/context/selectedDateCtx";
+import { updateSelectedDay } from "@/stores/selectedDayStore";
 
 const styles = {
 	dayCell: css({
@@ -19,6 +19,10 @@ const styles = {
 
 	dayCellDimmed: css({
 		backgroundColor: "transparent",
+	}),
+
+	selectedDay: css({
+		boxShadow: "inset 0 0 0 2px lightgrey",
 	}),
 
 	dayCellHeader: css({
@@ -38,7 +42,17 @@ const styles = {
 	}),
 };
 
-export const Day = ({ day }: { day: Date }) => {
+export const Day = React.memo(({
+	currentDay,
+	isToday,
+	isSelectedDay,
+  isCurrentMonth
+}: {
+	currentDay: string;
+	isToday: boolean;
+	isSelectedDay: boolean;
+  isCurrentMonth: boolean
+}) => {
 	const locale = useLocale();
 	const dayFormatDigits = new Intl.DateTimeFormat(locale, {
 		day: "numeric",
@@ -50,29 +64,31 @@ export const Day = ({ day }: { day: Date }) => {
 
 	let dayFormat = dayFormatDigits;
 
-	if (isFirstDayOfMonth(day) || isLastDayOfMonth(day)) {
+	const currentDayObj = new Date(currentDay);
+	if (isFirstDayOfMonth(currentDayObj) || isLastDayOfMonth(currentDayObj)) {
 		dayFormat = dayFormatNameDigits;
 	}
 
-	const isToday = new Date().toDateString() === day.toDateString();
-
-	const { date: newDate } = React.useContext(SelectedDateCtx);
-	const selectedMonth = new Date(newDate).getMonth();
-	const isCurrentMonth = day.getMonth() === selectedMonth;
-
 	return (
 		<button
-			type="button"
-			css={[styles.dayCell, !isCurrentMonth && styles.dayCellDimmed]}
+			type='button'
+			css={[
+				styles.dayCell,
+				!isCurrentMonth && styles.dayCellDimmed,
+				isSelectedDay && styles.selectedDay,
+			]}
+			onClick={() => updateSelectedDay(currentDay)}
 		>
-			<span hidden aria-hidden="false">
+			<span hidden aria-hidden='false'>
 				Add calendar event
 			</span>
 			<div css={styles.dayCellHeader}>
-				<time css={isToday && styles.todayTime} dateTime={day.toDateString()}>
-					{dayFormat.format(day)}
+				<time css={isToday && styles.todayTime} dateTime={currentDay}>
+					{dayFormat.format(currentDayObj)}
 				</time>
 			</div>
 		</button>
 	);
-};
+});
+
+Day.displayName = "Day";

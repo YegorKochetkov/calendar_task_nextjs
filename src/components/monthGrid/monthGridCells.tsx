@@ -1,11 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import React from "react";
 import { css } from "@emotion/react";
+import { useStore } from "@nanostores/react";
 
 import { Day } from "../day";
 
 import { calendarColumns, getMonthGrid } from "@/lib/utils";
-import { SelectedDateCtx } from "@/context/selectedDateCtx";
+import { $selectedDay } from "@/stores/selectedDayStore";
+import { $selectedDate } from "@/stores/selectedDateStore";
 
 const styles = {
 	weekRow: css({
@@ -22,16 +24,31 @@ const styles = {
 };
 
 export const MonthGridCells = () => {
-	const { date } = React.useContext(SelectedDateCtx);
-	const monthGrid = getMonthGrid(date);
+	const selectedDate = useStore($selectedDate);
+	const selectedDay = useStore($selectedDay);
+	const monthGrid = React.useMemo(
+		() => getMonthGrid(selectedDate),
+		[selectedDate],
+	);
 
 	return (
 		<>
 			{monthGrid.map((weekRow, weekIndex) => (
 				<React.Fragment key={weekIndex}>
 					<div css={[styles.weekRow, weekIndex === 0 && styles.firstWeekRow]}>
-						{weekRow.map((day, dayIndex) => (
-							<Day key={dayIndex} day={day} />
+						{weekRow.map((currentDay, dayIndex) => (
+							<Day
+								key={dayIndex}
+								currentDay={currentDay.toDateString()}
+								isToday={
+									currentDay.toDateString() === new Date().toDateString()
+								}
+								isCurrentMonth={
+									new Date(selectedDate).getMonth() ===
+									new Date(currentDay).getMonth()
+								}
+								isSelectedDay={currentDay.toDateString() === selectedDay}
+							/>
 						))}
 					</div>
 				</React.Fragment>
