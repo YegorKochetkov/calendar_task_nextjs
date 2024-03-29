@@ -1,8 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import React from "react";
 import { css } from "@emotion/react";
+import { useStore } from "@nanostores/react";
 
-import { SelectedDateCtx } from "@/context/selectedDateCtx";
+import { $selectedDate, updateSelectedDate } from "@/stores/selectedDateStore";
 
 const styles = {
 	btn: css({
@@ -19,21 +20,21 @@ const styles = {
 };
 
 export const DateCtrl = () => {
-	const { date, updateDate } = React.useContext(SelectedDateCtx);
-	const currentDate = new Date(date);
+  const selectedDate = useStore($selectedDate);
+	const currentDate = new Date(selectedDate);
 
 	const nextMonthHandler = () => {
 		currentDate.setMonth(currentDate.getMonth() + 1);
-		updateDate(currentDate.toISOString());
+		updateSelectedDate(currentDate.toDateString());
 	};
 
 	const prevMonthHandler = () => {
 		currentDate.setMonth(currentDate.getMonth() - 1);
-		updateDate(currentDate.toISOString());
+		updateSelectedDate(currentDate.toDateString());
 	};
 
 	const resetToCurrentDateHandler = () => {
-		updateDate(new Date().toISOString());
+		updateSelectedDate(new Date().toDateString());
 	};
 
 	return (

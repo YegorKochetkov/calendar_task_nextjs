@@ -1,11 +1,10 @@
 import React from "react";
 
-import { ModalCtx } from "@/context/modalCtx";
+import { showModal } from "@/stores/modalStore";
 
 export const CreateEventButton = () => {
-	const { setShowModal } = React.useContext(ModalCtx);
 	const addEventModalHandler = () => {
-		setShowModal(true);
+		showModal(true);
 	};
 
 	return (

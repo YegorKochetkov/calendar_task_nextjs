@@ -2,8 +2,9 @@
 "use client";
 import React from "react";
 import { css } from "@emotion/react";
+import { useStore } from "@nanostores/react";
 
-import { ModalCtx } from "@/context/modalCtx";
+import { $modalState, showModal } from "@/stores/modalStore";
 
 const styles = {
 	dialog: css({
@@ -27,16 +28,16 @@ export const Modal = React.forwardRef(
 		children: React.ReactNode;
 		modalRef: React.MutableRefObject<HTMLDialogElement | null>;
 	}) => {
-		const { showModal, setShowModal } = React.useContext(ModalCtx);
+    const isModalOpen = useStore($modalState);
 
 		React.useEffect(() => {
-			if (!showModal) {
+			if (!isModalOpen) {
 				return;
 			}
 
 			modalRef.current?.showModal();
-			setShowModal(true);
-		}, [showModal, setShowModal, modalRef]);
+			showModal(true);
+		}, [modalRef, isModalOpen]);
 
 		return (
 			<dialog ref={modalRef} css={styles.dialog}>
@@ -45,3 +46,5 @@ export const Modal = React.forwardRef(
 		);
 	},
 );
+
+Modal.displayName = "Modal";

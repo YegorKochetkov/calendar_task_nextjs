@@ -4,7 +4,8 @@ import React from "react";
 import { css } from "@emotion/react";
 
 import { Modal } from "./shared/modal";
-import { ModalCtx } from "@/context/modalCtx";
+import { SelectedDay } from "./shared/selectedDay";
+import { showModal } from "@/stores/modalStore";
 
 const styles = {
 	dialogHeader: css({
@@ -18,7 +19,7 @@ const styles = {
 		"& label": {
 			display: "flex",
 			flexDirection: "column",
-			marginBlockEnd: "0.5rem",
+			marginBlockEnd: "1rem",
 		},
 		"& label > span": {
 			marginBlockEnd: "0.25rem",
@@ -39,17 +40,16 @@ const styles = {
 };
 
 export const AddEventModal = () => {
-	const { setShowModal } = React.useContext(ModalCtx);
 	const modalRef = React.useRef<HTMLDialogElement | null>(null);
 
 	const submitModalHandler = () => {
 		modalRef.current?.close();
-		setShowModal(false);
+		showModal(false);
 	};
 
 	const cancelModalHandler = () => {
 		modalRef.current?.close();
-		setShowModal(false);
+		showModal(false);
 	};
 
 	const [title, setTitle] = React.useState("");
@@ -59,27 +59,38 @@ export const AddEventModal = () => {
 			<header css={styles.dialogHeader}>Add Event</header>
 			<form css={styles.dialogForm}>
 				<label>
-					<span>Title</span>
+					<span>Add event</span>
 					<input
-						type="text"
+						type='text'
+						name='title'
 						value={title}
-						onChange={(e) => setTitle(e.target.value)}
+						onChange={(e) => setTitle(e.target.value.trim())}
+						required
+						autoComplete='off'
 					/>
 				</label>
+				<SelectedDay
+					formatter={{
+						day: "numeric",
+						weekday: "long",
+						month: "long",
+						year: "numeric",
+					}}
+				/>
 			</form>
 			<footer css={styles.dialogCtrl}>
 				<button
-					type="button"
-					className="btn"
-					value="save"
+					type='button'
+					className='btn'
+					value='save'
 					onClick={submitModalHandler}
 				>
 					Save
 				</button>
 				<button
-					type="button"
-					className="btn"
-					value="cancel"
+					type='button'
+					className='btn'
+					value='cancel'
 					onClick={cancelModalHandler}
 				>
 					Cancel
