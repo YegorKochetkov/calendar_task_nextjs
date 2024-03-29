@@ -1,10 +1,10 @@
 import React from "react";
 
-import { showModal } from "@/stores/modalStore";
+import { showModal } from "@/stores/modalsStore";
 
-export const CreateEventButton = () => {
+export const AddEventButton = () => {
   const addEventModalHandler = () => {
-    showModal();
+    showModal("addEventModal");
   };
 
   return (
