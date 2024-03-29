@@ -2,7 +2,6 @@
 import React from "react";
 import { css } from "@emotion/react";
 
-import { Day } from "../day";
 import { MonthGridHeader } from "./monthGridHeader";
 import { MonthGridCells } from "./monthGridCells";
 

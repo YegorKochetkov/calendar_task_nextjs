@@ -4,8 +4,8 @@ import React from "react";
 import { css } from "@emotion/react";
 
 import { DateCtrl } from "./dateCtrl";
-import { SelectedDate } from "../shared/selectedDate";
 import { ViewCtrl } from "./viewCtrl";
+import { SelectedDate } from "../shared/selectedDate";
 
 const styles = {
 	header: css({
@@ -23,6 +23,10 @@ const styles = {
 			gap: "1rem",
 		},
 	}),
+
+	date: css({
+		marginInline: "auto",
+	}),
 };
 
 export const CalendarHeader = () => {
@@ -33,7 +37,9 @@ export const CalendarHeader = () => {
 			</h1>
 			<span className="icon-calendar" />
 			<DateCtrl />
-			<SelectedDate formatter={{ month: "long", year: "numeric" }} />
+			<span css={styles.date}>
+				<SelectedDate formatter={{ month: "long", year: "numeric" }} />
+			</span>
 			<ViewCtrl />
 		</header>
 	);
