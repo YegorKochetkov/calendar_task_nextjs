@@ -3,6 +3,8 @@
 import React from "react";
 import { css } from "@emotion/react";
 
+import { closeModals } from "@/stores/modalsStore";
+
 const styles = {
   dialog: css({
     minWidth: "25%",
@@ -17,24 +19,32 @@ const styles = {
   }),
 };
 
-export const Modal =
-  ({
-    children,
-    isOpen
-  }: {
-    children: React.ReactNode;
-    isOpen: boolean;
-  }) => {
-    const dialogRef = React.useRef<HTMLDialogElement | null>(null);
+export const Modal = ({
+  children,
+  isOpen,
+}: {
+  children: React.ReactNode;
+  isOpen: boolean;
+}) => {
+  const dialogRef = React.useRef<HTMLDialogElement | null>(null);
 
-    React.useEffect(() => {
-      isOpen ? dialogRef.current?.showModal() : dialogRef.current?.close();
-    }, [ dialogRef, isOpen ]);
+  React.useEffect(() => {
+    isOpen ? dialogRef.current?.showModal() : dialogRef.current?.close();
+  }, [ dialogRef, isOpen ]);
 
-    return (
-      <dialog ref={dialogRef} css={styles.dialog}>
-        {children}
-      </dialog>
-    );
-  }
-  ;
+  React.useEffect(() => {
+    document.addEventListener("keydown", (ev) => {
+      ev.key === "Escape" && closeModals();
+    });
+
+    return () => document.removeEventListener("keydown", (ev) => {
+      ev.key === "Escape" && closeModals();
+    })
+  }, []);
+
+  return (
+    <dialog ref={dialogRef} css={styles.dialog}>
+      {children}
+    </dialog>
+  );
+};

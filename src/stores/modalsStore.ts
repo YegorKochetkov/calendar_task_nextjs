@@ -17,3 +17,9 @@ export function showModal(modal: keyof ModalsState) {
 export function closeModal(modal: keyof ModalsState) {
 	$modalsState.setKey(modal, "close");
 }
+
+export function closeModals() {
+	for (let modal of Object.keys($modalsState.get())) {
+		closeModal(modal as keyof ModalsState);
+	}
+}
