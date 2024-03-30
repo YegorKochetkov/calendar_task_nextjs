@@ -6,14 +6,15 @@ import { useLocale } from "@/hooks/useLocale";
 import { $selectedDate } from "@/stores/selectedDateStore";
 
 export const SelectedDate = ({
-	formatter,
+  formatter,
 }: Record<string, Intl.DateTimeFormatOptions>) => {
-	const locale = useLocale();
+  const locale = useLocale();
   const selectedDate = useStore($selectedDate);
-	const currentDate = new Date(selectedDate);
-	const intlCurrentDate = new Intl.DateTimeFormat(locale, formatter).format(
-		currentDate,
-	);
+  const selectedDateObj = new Date(selectedDate ? selectedDate : new Date().toDateString());
+  const intlCurrentDate = new Intl.DateTimeFormat(locale, formatter).format(
+    selectedDateObj,
+  );
 
-	return <time dateTime={new Date().toDateString()}>{intlCurrentDate}</time>;
+
+  return <time dateTime={new Date().toDateString()}>{intlCurrentDate}</time>;
 };
