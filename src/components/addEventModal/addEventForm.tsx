@@ -88,7 +88,7 @@ export const AddEventForm = ({
         />
       </label>
       <fieldset css={styles.labelsColors}>
-        <legend>Select a color tag:</legend>
+        <legend>Select a label color:</legend>
         {labelsColors.map((label, index) => (
           <label key={index}>
             <input
@@ -98,11 +98,12 @@ export const AddEventForm = ({
               value={label}
               hidden
               aria-hidden="false"
-              checked={labelColor === label}
+              defaultChecked={labelColor === label}
               onClick={() => onSetLabelColor(label)}
             />
             <span
               style={{ "--label-color": `${label}` } as React.CSSProperties}
+              title={label}
             />
           </label>
         ))}
