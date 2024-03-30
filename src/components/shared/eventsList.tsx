@@ -1,11 +1,18 @@
 /** @jsxImportSource @emotion/react */
-import React from 'react'
-import { useStore } from '@nanostores/react';
-import { css } from '@emotion/react';
+"use client";
+import React from "react";
+import { useStore } from "@nanostores/react";
+import { css } from "@emotion/react";
 
-import { $calendarEvents, CalendarEvent, setSelectedCalendarEvent } from '@/stores/eventsStore';
-import { showModal } from '@/stores/modalsStore';
-import { updateSelectedDay } from '@/stores/selectedDayStore';
+import {
+  $calendarEvents,
+  $calendarEventsLabelFilter,
+  $calendarEventsQueryFilter,
+  CalendarEvent,
+  setSelectedCalendarEvent,
+} from "@/stores/eventsStore";
+import { showModal } from "@/stores/modalsStore";
+import { updateSelectedDay } from "@/stores/selectedDayStore";
 
 const styles = {
   eventsList: css({
@@ -35,39 +42,61 @@ const styles = {
   }),
 };
 
-export const EventsList = React.memo(({ currentDay }: { currentDay: string }) => {
-  const calendarEvents = useStore($calendarEvents);
-  const events = calendarEvents.filter(
-    (event) => new Date(event.date).toDateString() === currentDay,
-  );
+export const EventsList = React.memo(
+  ({ currentDay }: { currentDay: string }) => {
+    const calendarEventsQueryFilter = useStore($calendarEventsQueryFilter);
+    const calendarEventsLabelFilter = useStore($calendarEventsLabelFilter);
+    const calendarEvents = useStore($calendarEvents);
 
-  const handleEventClick = (
-    ev: React.MouseEvent<HTMLLIElement, MouseEvent>,
-    calendarEvent: CalendarEvent,
-  ) => {
-    ev.stopPropagation();
-    setSelectedCalendarEvent(calendarEvent);
-    updateSelectedDay(calendarEvent.date);
-    showModal("addEventModal");
-  };
+    const events = React.useMemo(
+      () =>
+        calendarEvents.filter((event) => {
+          const dateFilter = new Date(event.date).toDateString() === currentDay;
+          const queryFilter = event.title
+            .toLocaleLowerCase()
+            .includes(calendarEventsQueryFilter.toLocaleLowerCase());
+          const labelFilter = calendarEventsLabelFilter
+            ? event.labelColor === calendarEventsLabelFilter
+            : true;
 
-  return (
-    <ul css={styles.eventsList}>
-      {events.map((calendarEvent) => (
-        <li
-          key={calendarEvent.id}
-          style={
-            {
-              "--label-color": calendarEvent.labelColor,
-            } as React.CSSProperties
-          }
-          onClick={(ev) => handleEventClick(ev, calendarEvent)}
-        >
-          {calendarEvent.title}
-        </li>
-      ))}
-    </ul>
-  )
-});
+          return dateFilter && queryFilter && labelFilter;
+        }),
+      [
+        calendarEvents,
+        calendarEventsLabelFilter,
+        calendarEventsQueryFilter,
+        currentDay,
+      ],
+    );
+
+    const handleEventClick = (
+      ev: React.MouseEvent<HTMLLIElement, MouseEvent>,
+      calendarEvent: CalendarEvent,
+    ) => {
+      ev.stopPropagation();
+      setSelectedCalendarEvent(calendarEvent);
+      updateSelectedDay(calendarEvent.date);
+      showModal("addEventModal");
+    };
+
+    return (
+      <ul css={styles.eventsList}>
+        {events.map((calendarEvent) => (
+          <li
+            key={calendarEvent.id}
+            style={
+              {
+                "--label-color": calendarEvent.labelColor,
+              } as React.CSSProperties
+            }
+            onClick={(ev) => handleEventClick(ev, calendarEvent)}
+          >
+            {calendarEvent.title}
+          </li>
+        ))}
+      </ul>
+    );
+  },
+);
 
 EventsList.displayName = "EventsList";
