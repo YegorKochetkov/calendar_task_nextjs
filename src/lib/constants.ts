@@ -5,7 +5,7 @@ export const labelsColors = [
 	"green",
 	"cyan",
 	"teal",
-	"orange",
+	"yellow",
 	"red",
 ];
 
