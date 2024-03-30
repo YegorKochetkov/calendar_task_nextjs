@@ -21,9 +21,7 @@ const styles = {
     flexShrink: 0,
     gap: "0.25rem",
     margin: 0,
-    paddingBlockEnd: "1.5rem",
     listStyle: "none",
-    height: "100%",
     width: "100%",
     overflowY: "scroll",
     "&::-webkit-scrollbar": {

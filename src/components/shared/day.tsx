@@ -8,6 +8,7 @@ import { updateSelectedDay } from "@/stores/selectedDayStore";
 import { showModal } from "@/stores/modalsStore";
 
 import { EventsList } from "./eventsList";
+import { HolidayList } from "./holidaysList";
 
 const styles = {
   dayCell: css({
@@ -46,6 +47,22 @@ const styles = {
     backgroundColor: "blue",
     borderRadius: "50%",
   }),
+
+  eventsLists: css({
+    display: "flex",
+    flexDirection: "column",
+    flexShrink: 0,
+    gap: "0.25rem",
+    margin: 0,
+    paddingBlockEnd: "1.75rem",
+    listStyle: "none",
+    height: "100%",
+    width: "100%",
+    overflowY: "scroll",
+    "&::-webkit-scrollbar": {
+      display: "none",
+    },
+  })
 };
 
 export const Day = React.memo(
@@ -102,7 +119,10 @@ export const Day = React.memo(
             {intlCurrentDay}
           </time>
         </div>
-        <EventsList currentDay={currentDay} />
+        <div css={styles.eventsLists}>
+          <HolidayList currentDay={currentDay} />
+          <EventsList currentDay={currentDay} />
+        </div>
       </button>
     );
   },
