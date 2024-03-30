@@ -3,60 +3,60 @@
 @import url("@/fonts/fontello.css");
 
 @layer base {
-  :where([aria-hidden='false'][hidden]) {
-    display: initial;
-  }
-  
-  :is(
-    [aria-hidden='false' i][hidden]:not(:focus):not(:active),
-    .visually-hidden
-  ) {
-    all: initial;
-    clip-path: path('');
-    contain: content;
-    height: 1px;
-    position: absolute;
-    white-space: nowrap;
-    width: 1px;
-  }
-  
-  body {
-    display: flex;
-    flex-direction: column;
+	:where([aria-hidden="false"][hidden]) {
+		display: initial;
+	}
 
-    &:has(dialog[open]) {
-      overflow: hidden;
-    }
-  }  
+	:is(
+			[aria-hidden="false" i][hidden]:not(:focus):not(:active),
+			.visually-hidden
+		) {
+		all: initial;
+		clip-path: path("");
+		contain: content;
+		height: 1px;
+		position: absolute;
+		white-space: nowrap;
+		width: 1px;
+	}
 
-  .btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    padding-inline: 0.5rem;
-    padding-block: 0.25rem;
-    min-height: 2rem;
+	body {
+		display: flex;
+		flex-direction: column;
 
-    border: none;
+		&:has(dialog[open]) {
+			overflow: hidden;
+		}
+	}
+
+	.btn {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		padding-inline: 0.5rem;
+		padding-block: 0.25rem;
+		min-height: 2rem;
+
+		border: none;
 		border-radius: 0.25rem;
-    
-    transition: background-color;
-    transition-duration: 250ms;
-    
-    cursor: pointer;
-    
-    &:hover { 
-      outline: 2px solid lightgrey;
-    }
 
-    &:active {
-      transform: scale(0.97);
-    }
+		transition: background-color;
+		transition-duration: 250ms;
 
-    &.btn-with-icon span{
-      --icon-size: 1rem;
-      margin-inline-end: 0.5rem;
-    }
-  }
+		cursor: pointer;
+
+		&:hover {
+			outline: 2px solid lightgrey;
+		}
+
+		&:active {
+			transform: scale(0.97);
+		}
+
+		&.btn-with-icon span {
+			--icon-size: 1rem;
+			margin-inline-end: 0.5rem;
+		}
+	}
 }

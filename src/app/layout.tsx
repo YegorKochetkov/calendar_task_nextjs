@@ -11,7 +11,7 @@ const iconFont = localFont({
 import "./globals.css";
 
 import { CalendarHeader } from "@/components/calendarHeader/calendarHeader";
-import { AddEventModal } from "@/components/addEventModal";
+import { AddEventModal } from "@/components/addEventModal/addEventModal";
 
 const inter = Inter({ subsets: [ "latin" ] });
 
