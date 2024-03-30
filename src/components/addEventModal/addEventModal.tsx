@@ -93,7 +93,7 @@ export const AddEventModal = () => {
   return (
     <Modal isOpen={openAddEventModal}>
       <div css={styles.dialog}>
-        <header css={styles.dialogHeader}>Add Event</header>
+        <header css={styles.dialogHeader}>{selectedEvent ? "Edit Event" : "Add Event"}</header>
         <AddEventForm
           title={title}
           onSetTitle={setTitle}
