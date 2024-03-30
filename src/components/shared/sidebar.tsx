@@ -2,7 +2,7 @@
 import React from "react";
 import { css } from "@emotion/react";
 
-import { AddEventButton } from "./shared/addEventButton";
+import { AddEventButton } from "./addEventButton";
 
 const styles = {
   sidebar: css({
