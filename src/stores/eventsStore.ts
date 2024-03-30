@@ -41,6 +41,17 @@ export function deleteCalendarEvent(event: CalendarEvent) {
 	$calendarEvents.set($calendarEvents.get().filter((ev) => ev.id !== event.id));
 }
 
+export const $calendarEventsQueryFilter = atom<string>("");
+
+export function setCalendarEventsFilter(query: string) {
+	$calendarEventsQueryFilter.set(query);
+}
+export const $calendarEventsLabelFilter = atom<string>("");
+
+export function setCalendarEventsLabelFilter(query: string) {
+	$calendarEventsLabelFilter.set(query);
+}
+
 export const $selectedCalendarEvent = atom<CalendarEvent | null>(null);
 
 export function setSelectedCalendarEvent(event: CalendarEvent | null) {
