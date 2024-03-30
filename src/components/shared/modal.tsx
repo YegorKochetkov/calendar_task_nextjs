@@ -4,6 +4,7 @@ import React from "react";
 import { css } from "@emotion/react";
 
 import { closeModals } from "@/stores/modalsStore";
+import { setSelectedCalendarEvent } from "@/stores/eventsStore";
 
 const styles = {
   dialog: css({
@@ -35,10 +36,12 @@ export const Modal = ({
   React.useEffect(() => {
     document.addEventListener("keydown", (ev) => {
       ev.key === "Escape" && closeModals();
+      setSelectedCalendarEvent(null);
     });
 
     return () => document.removeEventListener("keydown", (ev) => {
       ev.key === "Escape" && closeModals();
+      setSelectedCalendarEvent(null);
     })
   }, []);
 
