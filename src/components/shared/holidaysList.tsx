@@ -1,7 +1,9 @@
 /** @jsxImportSource @emotion/react */
-"use client";
 import React from "react";
 import { css } from "@emotion/react";
+import { useStore } from "@nanostores/react";
+
+import { $holidays } from "@/stores/holidaysStore";
 
 type Holiday = {
   date: string;
@@ -35,7 +37,7 @@ const styles = {
 };
 
 export const HolidayList = ({ currentDay }: { currentDay: string }) => {
-  const [ holidays, setHolidays ] = React.useState<Holiday[]>([]);
+  const holidays = useStore($holidays)
   const holidaysName = new Set();
   const uniqueHolidays: Holiday[] = [];
 
@@ -49,42 +51,6 @@ export const HolidayList = ({ currentDay }: { currentDay: string }) => {
 
     uniqueHolidays.push(holiday);
   });
-
-  React.useEffect(() => {
-    const abortController = new AbortController();
-    const signal = abortController.signal;
-    const url = "https://date.nager.at/api/v3/NextPublicHolidaysWorldwide";
-
-    const fetchData = async () => {
-      try {
-        const response = await fetch(url, { signal });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error: Status ${response.status}`);
-        }
-
-        const data = (await response.json()) as Holiday[];
-
-        setHolidays(data);
-      } catch (error: any) {
-        if ("name" in error && error.name === "AbortError") {
-          console.debug("Fetch holidays abort");
-        }
-
-        if ("message" in error) {
-          console.debug("Fetch holidays error: ", error.message);
-        }
-
-        console.debug("Fetch holidays error", error);
-      }
-    };
-
-    fetchData();
-
-    return () => {
-      abortController.abort();
-    };
-  }, []);
 
   return (
     <ul css={styles.holidaysList}>
