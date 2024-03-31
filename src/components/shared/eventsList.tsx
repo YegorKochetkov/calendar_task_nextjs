@@ -49,7 +49,9 @@ export const EventsList = React.memo(
     const events = React.useMemo(
       () =>
         calendarEvents.filter((event) => {
-          const dateFilter = new Date(event.date).toDateString() === currentDay;
+          const dateFilter =
+            new Date(event.date).toDateString() ===
+            new Date(currentDay).toDateString();
           const queryFilter = event.title
             .toLocaleLowerCase()
             .includes(calendarEventsQueryFilter.toLocaleLowerCase());
@@ -77,11 +79,24 @@ export const EventsList = React.memo(
       showModal("addEventModal");
     };
 
+    const eventDragStartHandler = (ev: React.DragEvent<HTMLLIElement>) => {
+      ev.currentTarget.classList.add("dragging");
+    };
+
+    const eventDragEndHandler = (ev: React.DragEvent<HTMLLIElement>) => {
+      ev.currentTarget.classList.remove("dragging");
+    };
+
     return (
-      <ul css={styles.eventsList}>
+      <ul css={styles.eventsList} data-events-list>
         {events.map((calendarEvent) => (
           <li
             key={calendarEvent.id}
+            draggable="true"
+            data-event
+            data-event-id={calendarEvent.id}
+            onDragStart={(ev) => eventDragStartHandler(ev)}
+            onDragEnd={(ev) => eventDragEndHandler(ev)}
             style={
               {
                 "--label-color": calendarEvent.labelColor,

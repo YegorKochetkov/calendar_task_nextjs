@@ -4,7 +4,7 @@ import { atom } from "nanostores";
 import { exampleCalendarEvents } from "@/lib/constants";
 
 export type CalendarEvent = {
-	id: number;
+	id: string;
 	title: string;
 	labelColor: string;
 	date: string;
@@ -34,6 +34,18 @@ export function addCalendarEvent(event: CalendarEvent) {
 export function updateCalendarEvent(event: CalendarEvent) {
 	$calendarEvents.set(
 		$calendarEvents.get().map((ev) => (ev.id === event.id ? event : ev)),
+	);
+}
+
+export function updateCalendarEventDate(eventId: string, date: string) {
+	$calendarEvents.set(
+		$calendarEvents.get().map((ev) => {
+			if (ev.id === eventId) {
+				ev.date = new Date(date).toISOString();
+			}
+
+			return ev;
+		}),
 	);
 }
 

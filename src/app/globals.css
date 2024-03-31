@@ -59,4 +59,8 @@
 			margin-inline-end: 0.5rem;
 		}
 	}
+
+	.dragging {
+		opacity: 0.7;
+	}
 }
