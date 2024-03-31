@@ -38,6 +38,15 @@ const styles = {
     gap: "0.25rem",
   }),
 
+  time: css({
+    display: "flex",
+    alignItems: "center",
+    width: "min-content",
+    "& span": {
+      marginInlineEnd: "0.5rem",
+    }
+  }),
+
   todayTime: css({
     display: "grid",
     placeItems: "center",
@@ -81,20 +90,16 @@ export const Day = React.memo(
     const dayFormatDigits = new Intl.DateTimeFormat(locale, {
       day: "numeric",
     });
-    const dayFormatNameDigits = new Intl.DateTimeFormat(locale, {
+    const dayFormatName = new Intl.DateTimeFormat(locale, {
       month: "short",
-      day: "numeric",
     });
-
-    let dayFormat = dayFormatDigits;
 
     const currentDayObj = new Date(currentDay);
 
-    if (isFirstDayOfMonth(currentDayObj) || isLastDayOfMonth(currentDayObj)) {
-      dayFormat = dayFormatNameDigits;
-    }
+    const showDayName = isFirstDayOfMonth(currentDayObj) || isLastDayOfMonth(currentDayObj);
 
-    const intlCurrentDay = dayFormat.format(currentDayObj);
+    const intlCurrentDayName = dayFormatName.format(currentDayObj);
+    const intlCurrentDayDigits = dayFormatDigits.format(currentDayObj);
 
     const addEventModalHandler = () => {
       updateSelectedDay(currentDay);
@@ -115,8 +120,9 @@ export const Day = React.memo(
           Add calendar event
         </span>
         <div css={styles.dayCellHeader}>
-          <time css={isToday && styles.todayTime} dateTime={currentDay}>
-            {intlCurrentDay}
+          <time css={styles.time} dateTime={currentDay}>
+            {showDayName && <span>{intlCurrentDayName}</span>}
+            <span css={isToday && styles.todayTime}>{intlCurrentDayDigits}</span>
           </time>
         </div>
         <div css={styles.eventsLists}>
