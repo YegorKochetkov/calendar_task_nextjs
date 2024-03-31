@@ -1,8 +1,6 @@
 import { persistentAtom } from "@nanostores/persistent";
 import { atom } from "nanostores";
 
-import { exampleCalendarEvents } from "@/lib/constants";
-
 export type CalendarEvent = {
 	id: string;
 	title: string;
@@ -11,8 +9,8 @@ export type CalendarEvent = {
 };
 
 export const $calendarEvents = persistentAtom<CalendarEvent[]>(
-	"savedEvents",
-	exampleCalendarEvents,
+	"calendarEvents",
+	[],
 	{
 		encode(value) {
 			return JSON.stringify(value);
@@ -21,7 +19,7 @@ export const $calendarEvents = persistentAtom<CalendarEvent[]>(
 			try {
 				return JSON.parse(value);
 			} catch {
-				return exampleCalendarEvents;
+				return [];
 			}
 		},
 	},

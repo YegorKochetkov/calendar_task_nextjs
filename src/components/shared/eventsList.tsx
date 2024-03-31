@@ -13,6 +13,7 @@ import {
 } from "@/stores/eventsStore";
 import { showModal } from "@/stores/modalsStore";
 import { updateSelectedDay } from "@/stores/selectedDayStore";
+import { createExampleEvents } from "@/lib/utils";
 
 const styles = {
   eventsList: css({
@@ -45,6 +46,10 @@ export const EventsList = React.memo(
     const calendarEventsQueryFilter = useStore($calendarEventsQueryFilter);
     const calendarEventsLabelFilter = useStore($calendarEventsLabelFilter);
     const calendarEvents = useStore($calendarEvents);
+
+    React.useEffect(() => {
+      if (calendarEvents.length === 0) { createExampleEvents() };
+    }, [ calendarEvents.length ])
 
     const events = React.useMemo(
       () =>

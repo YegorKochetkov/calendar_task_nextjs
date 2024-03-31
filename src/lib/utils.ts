@@ -1,3 +1,6 @@
+import { addCalendarEvent } from "@/stores/eventsStore";
+import { labelsColors } from "./constants";
+
 export const calendarRows = 6;
 export const calendarColumns = 7;
 export const weekStartDayIndex = 0;
@@ -49,3 +52,14 @@ export const getWeekDaysName = (
 
 	return days;
 };
+
+export function createExampleEvents() {
+	Array.from({ length: 4 }).forEach((_, index) => {
+		addCalendarEvent({
+			id: index.toString(),
+			title: `Event ${index}`,
+			labelColor: labelsColors[index],
+			date: new Date().toISOString(),
+		});
+	});
+}
