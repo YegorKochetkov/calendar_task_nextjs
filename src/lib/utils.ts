@@ -54,12 +54,31 @@ export const getWeekDaysName = (
 };
 
 export function createExampleEvents() {
-	Array.from({ length: 4 }).forEach((_, index) => {
-		addCalendarEvent({
-			id: index.toString(),
-			title: `Event ${index}`,
-			labelColor: labelsColors[index],
-			date: new Date().toISOString(),
-		});
-	});
+	return Array.from({ length: 4 }).map((_, index) => ({
+		id: index.toString(),
+		title: `Event ${index}`,
+		labelColor: labelsColors[index],
+		date: new Date().toISOString(),
+	}));
+}
+
+export function getDragAfterElement(eventsList: Element, y: number) {
+	const events: Element[] = Array.from(
+		eventsList.querySelectorAll("[data-event]:not(.dragging)"),
+	);
+
+	let closestElement: { offset: number; element: Element | null } = {
+		offset: Number.NEGATIVE_INFINITY,
+		element: null,
+	};
+
+	for (let i = 0; i < events.length; i++) {
+		const box = events[i].getBoundingClientRect();
+		const offset = y - box.top - box.height / 2;
+		if (offset < 0 && offset >= closestElement.offset) {
+			closestElement = { offset: offset, element: events[i] };
+		}
+	}
+
+	return closestElement.element;
 }
