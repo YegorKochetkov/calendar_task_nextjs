@@ -2,7 +2,7 @@ import { persistentAtom } from "@nanostores/persistent";
 
 export const $selectedDate = persistentAtom<string>(
 	"selectedDate",
-	new Date().toDateString(),
+	new Date(new Date().setHours(0, 0, 0, 0)).toISOString(),
 	{
 		encode(value) {
 			return JSON.stringify(value);
@@ -11,7 +11,7 @@ export const $selectedDate = persistentAtom<string>(
 			try {
 				return JSON.parse(value);
 			} catch {
-				return new Date().toDateString();
+				return new Date().toISOString();
 			}
 		},
 	},

@@ -10,7 +10,7 @@ export const SelectedDate = ({
 }: Record<string, Intl.DateTimeFormatOptions>) => {
   const locale = useLocale();
   const selectedDate = useStore($selectedDate);
-  const selectedDateObj = new Date(selectedDate ? selectedDate : new Date().toDateString());
+  const selectedDateObj = new Date(selectedDate ? selectedDate : new Date().toISOString());
   const intlCurrentDate = new Intl.DateTimeFormat(locale, formatter).format(
     selectedDateObj,
   );

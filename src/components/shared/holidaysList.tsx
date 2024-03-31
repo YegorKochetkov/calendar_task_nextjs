@@ -31,7 +31,6 @@ const styles = {
       textOverflow: "ellipsis",
       paddingInlineStart: "0.25rem",
       textAlign: "left",
-      cursor: "pointer",
     },
   }),
 };
@@ -43,7 +42,7 @@ export const HolidayList = ({ currentDay }: { currentDay: string }) => {
 
   holidays.forEach((holiday) => {
     const isCurrentDayHoliday =
-      new Date(holiday.date).toDateString() === currentDay;
+      new Date(holiday.date).toDateString() === new Date(currentDay).toDateString();
 
     if (holidaysName.has(holiday.name) || !isCurrentDayHoliday) return;
 

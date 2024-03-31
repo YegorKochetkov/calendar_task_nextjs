@@ -8,7 +8,6 @@ import { Day } from "../shared/day";
 import { calendarColumns, calendarRows, getMonthGrid } from "@/lib/utils";
 import { $selectedDay } from "@/stores/selectedDayStore";
 import { $selectedDate } from "@/stores/selectedDateStore";
-import { $calendarEvents } from "@/stores/eventsStore";
 
 const styles = {
   weekRow: css({
@@ -44,7 +43,7 @@ export const MonthGridCells = () => {
             {weekRow.map((currentDay, dayIndex) => (
               <Day
                 key={dayIndex}
-                currentDay={currentDay.toDateString()}
+                currentDay={currentDay.toISOString()}
                 isToday={
                   currentDay.toDateString() === new Date().toDateString()
                 }
@@ -52,7 +51,10 @@ export const MonthGridCells = () => {
                   new Date(selectedDate).getMonth() ===
                   new Date(currentDay).getMonth()
                 }
-                isSelectedDay={currentDay.toDateString() === selectedDay}
+                isSelectedDay={
+                  currentDay.toDateString() ===
+                  new Date(selectedDay).toDateString()
+                }
               />
             ))}
           </div>

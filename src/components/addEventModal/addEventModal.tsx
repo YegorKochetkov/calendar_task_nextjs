@@ -57,7 +57,7 @@ export const AddEventModal = () => {
   ) => {
     ev.preventDefault();
     const newEvent: CalendarEvent = {
-      id: selectedEvent?.id ? selectedEvent.id : Date.now(),
+      id: selectedEvent?.id ? selectedEvent.id : new Date().toISOString(),
       title,
       labelColor,
       date: new Date(selectedDay).toISOString(),
