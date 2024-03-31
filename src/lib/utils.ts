@@ -1,4 +1,3 @@
-import { addCalendarEvent } from "@/stores/eventsStore";
 import { labelsColors } from "./constants";
 
 export const calendarRows = 6;

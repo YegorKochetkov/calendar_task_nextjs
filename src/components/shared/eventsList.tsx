@@ -13,7 +13,6 @@ import {
 } from "@/stores/eventsStore";
 import { showModal } from "@/stores/modalsStore";
 import { updateSelectedDay } from "@/stores/selectedDayStore";
-import { createExampleEvents } from "@/lib/utils";
 
 const styles = {
   eventsList: css({
@@ -25,6 +24,8 @@ const styles = {
     listStyle: "none",
     width: "100%",
     overflowY: "scroll",
+    "-ms-overflow-style": "none",
+    scrollbarWidth: "none",
     "&::-webkit-scrollbar": {
       display: "none",
     },
@@ -46,10 +47,6 @@ export const EventsList = React.memo(
     const calendarEventsQueryFilter = useStore($calendarEventsQueryFilter);
     const calendarEventsLabelFilter = useStore($calendarEventsLabelFilter);
     const calendarEvents = useStore($calendarEvents);
-
-    React.useEffect(() => {
-      if (calendarEvents.length === 0) { createExampleEvents() };
-    }, [ calendarEvents.length ])
 
     const events = React.useMemo(
       () =>
@@ -93,13 +90,15 @@ export const EventsList = React.memo(
     };
 
     return (
-      <ul css={styles.eventsList} data-events-list>
+      <ul
+        css={styles.eventsList}
+        data-events-list
+      >
         {events.map((calendarEvent) => (
           <li
             key={calendarEvent.id}
             draggable="true"
             data-event
-            data-event-id={calendarEvent.id}
             onDragStart={(ev) => eventDragStartHandler(ev)}
             onDragEnd={(ev) => eventDragEndHandler(ev)}
             style={
