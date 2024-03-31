@@ -1,7 +1,8 @@
+import { localStorageKey } from "@/lib/constants";
 import { persistentAtom } from "@nanostores/persistent";
 
 export const $selectedDate = persistentAtom<string>(
-	"selectedDate",
+	localStorageKey.selectedDate,
 	new Date(new Date().setHours(0, 0, 0, 0)).toISOString(),
 	{
 		encode(value) {

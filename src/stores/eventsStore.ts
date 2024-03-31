@@ -1,6 +1,8 @@
 import { persistentAtom } from "@nanostores/persistent";
 import { atom } from "nanostores";
 
+import { localStorageKey } from "@/lib/constants";
+
 export type CalendarEvent = {
 	id: string;
 	title: string;
@@ -9,7 +11,7 @@ export type CalendarEvent = {
 };
 
 export const $calendarEvents = persistentAtom<CalendarEvent[]>(
-	"calendarEvents",
+	localStorageKey.calendarEvents,
 	[],
 	{
 		encode(value) {
@@ -24,6 +26,10 @@ export const $calendarEvents = persistentAtom<CalendarEvent[]>(
 		},
 	},
 );
+
+export function setCalendarEvents(events: CalendarEvent[]) {
+	$calendarEvents.set([...events]);
+}
 
 export function addCalendarEvent(event: CalendarEvent) {
 	$calendarEvents.set([...$calendarEvents.get(), event]);

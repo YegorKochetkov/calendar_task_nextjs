@@ -1,6 +1,11 @@
 import { persistentAtom } from "@nanostores/persistent";
 
-export const $draggingEventId = persistentAtom<string>("draggingEventId", "");
+import { localStorageKey } from "@/lib/constants";
+
+export const $draggingEventId = persistentAtom<string>(
+	localStorageKey.draggingEventId,
+	"",
+);
 export const $draggingEventNextDate = persistentAtom<string>(
 	"draggingEventNextDate",
 	"",
