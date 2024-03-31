@@ -29,7 +29,6 @@ export const MonthGrid = () => {
 
     const exampleEvents = createExampleEvents();
     setCalendarEvents(exampleEvents)
-    console.log("first")
   }, [ events ]);
 
   return (
