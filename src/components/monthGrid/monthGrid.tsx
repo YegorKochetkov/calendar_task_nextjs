@@ -8,6 +8,10 @@ import { MonthGridCells } from "./monthGridCells";
 import { fetchHoliday } from "@/lib/fetchHolidays";
 import { createExampleEvents, getDragAfterElement } from "@/lib/utils";
 import { $calendarEvents, setCalendarEvents } from "@/stores/eventsStore";
+import {
+  setDraggingEventId,
+  setDraggingEventNextDate,
+} from "@/stores/dragNDropStateStore";
 
 const styles = {
   monthSection: css({
@@ -18,6 +22,8 @@ const styles = {
 };
 
 export const MonthGrid = () => {
+  const savedEvents = useStore($calendarEvents);
+
   React.useEffect(() => {
     fetchHoliday();
   }, []);
@@ -35,30 +41,58 @@ export const MonthGrid = () => {
     const events = document.querySelectorAll("[data-event]");
     const dayCells = document.querySelectorAll("[data-day]");
 
-    events.forEach((draggable_event) => {
-      draggable_event.addEventListener("dragstart", () => {
-        draggable_event.classList.add("dragging");
-      });
+    const eventsDragStartHandler = (event: Element) => {
+      event.classList.add("dragging");
+    };
 
-      draggable_event.addEventListener("dragend", () => {
-        draggable_event.classList.remove("dragging");
-      });
+    const eventsDragEndHandler = (event: Element) => {
+      event.classList.remove("dragging");
+      setDraggingEventId(event.getAttribute("data-event-id")!);
+    };
+
+    const dayCellDragOverHandler = (ev: Event, dayCell: Element) => {
+      ev.preventDefault();
+      const { clientY } = ev as MouseEvent;
+      const eventsLists = dayCell.querySelector("[data-events-list]");
+      const afterElement = getDragAfterElement(eventsLists!, clientY);
+      const draggable = document.querySelector(".dragging");
+      setDraggingEventNextDate(dayCell.getAttribute("data-day-date")!);
+
+      if (afterElement === null && draggable) {
+        eventsLists?.appendChild(draggable);
+      } else if (draggable) {
+        eventsLists?.insertBefore(draggable, afterElement);
+      }
+    };
+
+    events.forEach((event) => {
+      event.addEventListener("dragstart", () => eventsDragStartHandler(event));
+      event.addEventListener("dragend", () => eventsDragEndHandler(event));
     });
 
     dayCells.forEach((dayCell) => {
-      dayCell.addEventListener("dragover", (ev) => {
-        ev.preventDefault();
-        const eventsLists = dayCell.querySelector("[data-events-list]");
-        const afterElement = getDragAfterElement(eventsLists!, ev.clientY);
-        const draggable = document.querySelector(".dragging");
-
-        if (afterElement === null && draggable) {
-          eventsLists?.appendChild(draggable);
-        } else if (draggable) {
-          eventsLists?.insertBefore(draggable, afterElement);
-        }
-      });
+      dayCell.addEventListener("dragover", (ev) =>
+        dayCellDragOverHandler(ev, dayCell),
+      );
     });
+
+    return () => {
+      const events = document.querySelectorAll("[data-event]");
+      const dayCells = document.querySelectorAll("[data-day]");
+
+      events.forEach((event) => {
+        event.removeEventListener("dragstart", () =>
+          eventsDragStartHandler(event),
+        );
+        event.removeEventListener("dragend", () => eventsDragEndHandler(event));
+      });
+
+      dayCells.forEach((dayCell) => {
+        dayCell.removeEventListener("dragover", (ev) =>
+          dayCellDragOverHandler(ev, dayCell),
+        );
+      });
+    };
   }, []);
 
   return (
