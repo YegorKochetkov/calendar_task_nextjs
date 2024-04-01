@@ -84,7 +84,7 @@ export const AddEventForm = ({
           onChange={(e) => onSetTitle(e.target.value)}
           required
           autoComplete="off"
-          max={64}
+          max="64"
         />
       </label>
       <fieldset css={styles.labelsColors}>

@@ -36,13 +36,14 @@ const styles = {
 };
 
 export const HolidayList = ({ currentDay }: { currentDay: string }) => {
-  const holidays = useStore($holidays)
+  const holidays = useStore($holidays);
   const holidaysName = new Set();
   const uniqueHolidays: Holiday[] = [];
 
   holidays.forEach((holiday) => {
     const isCurrentDayHoliday =
-      new Date(holiday.date).toDateString() === new Date(currentDay).toDateString();
+      new Date(holiday.date).toDateString() ===
+      new Date(currentDay).toDateString();
 
     if (holidaysName.has(holiday.name) || !isCurrentDayHoliday) return;
 

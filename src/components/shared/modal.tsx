@@ -39,10 +39,11 @@ export const Modal = ({
       setSelectedCalendarEvent(null);
     });
 
-    return () => document.removeEventListener("keydown", (ev) => {
-      ev.key === "Escape" && closeModals();
-      setSelectedCalendarEvent(null);
-    })
+    return () =>
+      document.removeEventListener("keydown", (ev) => {
+        ev.key === "Escape" && closeModals();
+        setSelectedCalendarEvent(null);
+      });
   }, []);
 
   return (
