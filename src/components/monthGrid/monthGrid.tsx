@@ -6,12 +6,15 @@ import { useStore } from "@nanostores/react";
 import { MonthGridHeader } from "./monthGridHeader";
 import { MonthGridCells } from "./monthGridCells";
 import { fetchHoliday } from "@/lib/fetchHolidays";
-import { createExampleEvents, getDragAfterElement } from "@/lib/utils";
-import { $calendarEvents, setCalendarEvents } from "@/stores/eventsStore";
+import { getDragAfterElement } from "@/lib/utils";
 import {
+  getDraggingEventNextDate,
   setDraggingEventId,
   setDraggingEventNextDate,
 } from "@/stores/dragNDropStateStore";
+import {
+  updateCalendarEventDate,
+} from "@/stores/eventsStore";
 
 const styles = {
   monthSection: css({
@@ -22,21 +25,11 @@ const styles = {
 };
 
 export const MonthGrid = () => {
-  const savedEvents = useStore($calendarEvents);
-
   React.useEffect(() => {
     fetchHoliday();
   }, []);
 
-  const events = useStore($calendarEvents);
-  // FOR EXAMPLE ONLY
-  React.useEffect(() => {
-    if (events.length > 0) return;
-
-    const exampleEvents = createExampleEvents();
-    setCalendarEvents(exampleEvents);
-  }, [ events ]);
-
+  // Drag & drop
   React.useEffect(() => {
     const events = document.querySelectorAll("[data-event]");
     const dayCells = document.querySelectorAll("[data-day]");
@@ -56,6 +49,7 @@ export const MonthGrid = () => {
       const eventsLists = dayCell.querySelector("[data-events-list]");
       const afterElement = getDragAfterElement(eventsLists!, clientY);
       const draggable = document.querySelector(".dragging");
+
       setDraggingEventNextDate(dayCell.getAttribute("data-day-date")!);
 
       if (afterElement === null && draggable) {
@@ -63,6 +57,33 @@ export const MonthGrid = () => {
       } else if (draggable) {
         eventsLists?.insertBefore(draggable, afterElement);
       }
+    };
+
+    const dragEndHandler = () => {
+      dayCells.forEach((dayCell) => {
+        const eventsInDay: { eventId: string, newEventDate: string }[] = [];
+        const eventsList = dayCell
+          .querySelector("[data-events-list]")
+          ?.querySelectorAll("[data-event]");
+
+        if (!eventsList || eventsList?.length === 0) return;
+
+        Array.from(eventsList).forEach((event) => {
+          const newEventDate = getDraggingEventNextDate();
+          const eventId = event.getAttribute("data-event-id")!;
+
+          const data = {
+            eventId,
+            newEventDate
+          };
+
+          eventsInDay.push(data);
+        });
+
+        for (let event of eventsInDay) {
+          updateCalendarEventDate(event.newEventDate, event.eventId);
+        }
+      });
     };
 
     events.forEach((event) => {
@@ -74,7 +95,10 @@ export const MonthGrid = () => {
       dayCell.addEventListener("dragover", (ev) =>
         dayCellDragOverHandler(ev, dayCell),
       );
+
+      dayCell.addEventListener("dragend", dragEndHandler);
     });
+
 
     return () => {
       const events = document.querySelectorAll("[data-event]");
@@ -91,6 +115,8 @@ export const MonthGrid = () => {
         dayCell.removeEventListener("dragover", (ev) =>
           dayCellDragOverHandler(ev, dayCell),
         );
+
+        dayCell.removeEventListener("dragend", dragEndHandler);
       });
     };
   }, []);
