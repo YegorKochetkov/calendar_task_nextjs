@@ -11,6 +11,10 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     gap: "1rem",
+    "@media (max-width: 600px)": {
+      flexDirection: "row",
+      flexWrap: "wrap",
+    },
     "& label": {
       position: "relative",
       display: "flex",
