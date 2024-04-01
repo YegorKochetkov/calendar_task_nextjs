@@ -113,6 +113,7 @@ export const Day = React.memo(
       <button
         type="button"
         data-day
+        data-day-date={currentDay}
         css={[
           styles.dayCell,
           !isCurrentMonth && styles.dayCellDimmed,

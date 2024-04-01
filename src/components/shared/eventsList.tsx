@@ -81,14 +81,6 @@ export const EventsList = React.memo(
       showModal("addEventModal");
     };
 
-    const eventDragStartHandler = (ev: React.DragEvent<HTMLLIElement>) => {
-      ev.currentTarget.classList.add("dragging");
-    };
-
-    const eventDragEndHandler = (ev: React.DragEvent<HTMLLIElement>) => {
-      ev.currentTarget.classList.remove("dragging");
-    };
-
     return (
       <ul
         css={styles.eventsList}
@@ -99,8 +91,7 @@ export const EventsList = React.memo(
             key={calendarEvent.id}
             draggable="true"
             data-event
-            onDragStart={(ev) => eventDragStartHandler(ev)}
-            onDragEnd={(ev) => eventDragEndHandler(ev)}
+            data-event-id={calendarEvent.id}
             style={
               {
                 "--label-color": calendarEvent.labelColor,
