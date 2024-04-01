@@ -10,9 +10,9 @@ export type CalendarEvent = {
 	date: string;
 };
 
-export const $calendarEvents = persistentAtom<CalendarEvent[]>(
+export const $calendarEvents = persistentAtom<Record<string, CalendarEvent[]>>(
 	localStorageKey.calendarEvents,
-	[],
+	{},
 	{
 		encode(value) {
 			return JSON.stringify(value);
@@ -21,40 +21,87 @@ export const $calendarEvents = persistentAtom<CalendarEvent[]>(
 			try {
 				return JSON.parse(value);
 			} catch {
-				return [];
+				return new Map();
 			}
 		},
 	},
 );
 
-export function setCalendarEvents(events: CalendarEvent[]) {
-	$calendarEvents.set([...events]);
+export function getCalendarEvents() {
+	return $calendarEvents.get();
 }
 
-export function addCalendarEvent(event: CalendarEvent) {
-	$calendarEvents.set([...$calendarEvents.get(), event]);
+export function setCalendarEvents(events: Record<string, CalendarEvent[]>) {
+	$calendarEvents.set({ ...events });
 }
 
-export function updateCalendarEvent(event: CalendarEvent) {
-	$calendarEvents.set(
-		$calendarEvents.get().map((ev) => (ev.id === event.id ? event : ev)),
-	);
+export function addCalendarEvent(dayDate: string, event: CalendarEvent) {
+	let events = $calendarEvents.get();
+	let eventsForDate = events[dayDate];
+
+	eventsForDate = eventsForDate ? [...eventsForDate, event] : [event];
+	events = { ...events, [dayDate]: eventsForDate };
+
+	$calendarEvents.set({ ...events });
 }
 
-export function updateCalendarEventDate(eventId: string, date: string) {
-	$calendarEvents.set(
-		$calendarEvents.get().map((ev) => {
-			if (ev.id === eventId) {
-				ev.date = new Date(date).toISOString();
+export function updateCalendarEvent(dayDate: string, event: CalendarEvent) {
+	let events = $calendarEvents.get();
+	let eventsForDate = events[dayDate];
+
+	for (let ev of eventsForDate) {
+		if (ev.id === event.id) {
+			ev = event;
+		}
+	}
+
+	events = { ...events, [dayDate]: [event] };
+
+	$calendarEvents.set({ ...events });
+}
+
+export function updateCalendarEventDate(dayDate: string, eventId: string) {
+	let events = $calendarEvents.get();
+	let eventsForDate = events[dayDate];
+
+	for (let event of eventsForDate) {
+		if (eventId === event.id) {
+			event.date = dayDate;
+		}
+	}
+
+	eventsForDate = eventsForDate.map((event) => {
+		if (eventId === event.id) {
+			event.date = dayDate;
+		}
+
+		return event;
+	});
+
+	events = { ...events, [dayDate]: eventsForDate };
+
+	$calendarEvents.set({ ...events });
+}
+
+export function deleteCalendarEvent(dayDate: string, eventId: string) {
+	let events = $calendarEvents.get();
+	let eventsForDate = events[dayDate];
+
+	const updatedEventsForDate = eventsForDate.filter((ev) => ev.id !== eventId);
+	const clearedEvents: Record<string, CalendarEvent[]> = {};
+
+	if (updatedEventsForDate.length === 0) {
+		for (let date in events) {
+			if (date !== dayDate) {
+				clearedEvents[date] = events[date];
 			}
+		}
+		events = { ...clearedEvents };
+	} else {
+		events = { ...events, [dayDate]: [...updatedEventsForDate] };
+	}
 
-			return ev;
-		}),
-	);
-}
-
-export function deleteCalendarEvent(event: CalendarEvent) {
-	$calendarEvents.set($calendarEvents.get().filter((ev) => ev.id !== event.id));
+	$calendarEvents.set({ ...events });
 }
 
 export const $calendarEventsQueryFilter = atom<string>("");

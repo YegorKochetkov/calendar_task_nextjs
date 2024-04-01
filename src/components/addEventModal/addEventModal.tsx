@@ -7,8 +7,10 @@ import { useStore } from "@nanostores/react";
 import { Modal } from "../shared/modal";
 import { SelectedDay } from "../shared/selectedDay";
 import { AddEventForm } from "./addEventForm";
+
 import { $modalsState, closeModal } from "@/stores/modalsStore";
 import { labelsColors } from "@/lib/constants";
+import { $selectedDay } from "@/stores/selectedDayStore";
 import {
   $selectedCalendarEvent,
   CalendarEvent,
@@ -17,7 +19,6 @@ import {
   setSelectedCalendarEvent,
   updateCalendarEvent,
 } from "@/stores/eventsStore";
-import { $selectedDay } from "@/stores/selectedDayStore";
 
 const styles = {
   dialog: css({
@@ -37,7 +38,7 @@ const styles = {
     marginBlockStart: "1rem",
     "& button[name='delete']": {
       marginInlineEnd: "auto",
-    }
+    },
   }),
 };
 
@@ -57,13 +58,15 @@ export const AddEventModal = () => {
   ) => {
     ev.preventDefault();
     const newEvent: CalendarEvent = {
-      id: selectedEvent?.id ? selectedEvent.id : new Date().toISOString(),
+      id: selectedEvent?.id ? selectedEvent.id : Date.now().toString(),
       title,
       labelColor,
       date: new Date(selectedDay).toISOString(),
     };
 
-    selectedEvent ? updateCalendarEvent(newEvent) : addCalendarEvent(newEvent);
+    selectedEvent
+      ? updateCalendarEvent(newEvent.date, newEvent)
+      : addCalendarEvent(newEvent.date, newEvent);
     setTitle("");
     setLabelColor(labelsColors[ 0 ]);
     setSelectedCalendarEvent(null);
@@ -76,7 +79,7 @@ export const AddEventModal = () => {
   };
 
   const deleteModalHandler = () => {
-    deleteCalendarEvent(selectedEvent!);
+    deleteCalendarEvent(selectedEvent?.date!, selectedEvent?.id!);
     setSelectedCalendarEvent(null);
     closeModal("addEventModal");
   };
@@ -93,7 +96,9 @@ export const AddEventModal = () => {
   return (
     <Modal isOpen={openAddEventModal}>
       <div css={styles.dialog}>
-        <header css={styles.dialogHeader}>{selectedEvent ? "Edit Event" : "Add Event"}</header>
+        <header css={styles.dialogHeader}>
+          {selectedEvent ? "Edit Event" : "Add Event"}
+        </header>
         <AddEventForm
           title={title}
           onSetTitle={setTitle}

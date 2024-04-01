@@ -4,6 +4,8 @@ import React from "react";
 import { useStore } from "@nanostores/react";
 import { css } from "@emotion/react";
 
+import { showModal } from "@/stores/modalsStore";
+import { updateSelectedDay } from "@/stores/selectedDayStore";
 import {
   $calendarEvents,
   $calendarEventsLabelFilter,
@@ -11,8 +13,6 @@ import {
   CalendarEvent,
   setSelectedCalendarEvent,
 } from "@/stores/eventsStore";
-import { showModal } from "@/stores/modalsStore";
-import { updateSelectedDay } from "@/stores/selectedDayStore";
 
 const styles = {
   eventsList: css({
@@ -48,28 +48,37 @@ export const EventsList = React.memo(
     const calendarEventsLabelFilter = useStore($calendarEventsLabelFilter);
     const calendarEvents = useStore($calendarEvents);
 
-    const events = React.useMemo(
-      () =>
-        calendarEvents.filter((event) => {
-          const dateFilter =
-            new Date(event.date).toDateString() ===
-            new Date(currentDay).toDateString();
-          const queryFilter = event.title
-            .toLocaleLowerCase()
-            .includes(calendarEventsQueryFilter.toLocaleLowerCase());
-          const labelFilter = calendarEventsLabelFilter
-            ? event.labelColor === calendarEventsLabelFilter
-            : true;
+    const eventsForCurrentDay = React.useMemo(() => {
+      for (let dayDate in calendarEvents) {
+        if (
+          new Date(dayDate).toDateString() ===
+          new Date(currentDay).toDateString()
+        ) {
+          return calendarEvents[ dayDate ];
+        }
+      }
+    }, [ calendarEvents, currentDay ]);
 
-          return dateFilter && queryFilter && labelFilter;
-        }),
-      [
-        calendarEvents,
-        calendarEventsLabelFilter,
-        calendarEventsQueryFilter,
-        currentDay,
-      ],
-    );
+    const filteredEventsForCurrentDay = React.useMemo(() => {
+      return eventsForCurrentDay?.filter((event) => {
+        const dateFilter =
+          new Date(event.date).toDateString() ===
+          new Date(currentDay).toDateString();
+        const queryFilter = event.title
+          .toLocaleLowerCase()
+          .includes(calendarEventsQueryFilter.toLocaleLowerCase());
+        const labelFilter = calendarEventsLabelFilter
+          ? event.labelColor === calendarEventsLabelFilter
+          : true;
+
+        return dateFilter && queryFilter && labelFilter;
+      });
+    }, [
+      calendarEventsLabelFilter,
+      calendarEventsQueryFilter,
+      currentDay,
+      eventsForCurrentDay,
+    ]);
 
     const handleEventClick = (
       ev: React.MouseEvent<HTMLLIElement, MouseEvent>,
@@ -82,11 +91,8 @@ export const EventsList = React.memo(
     };
 
     return (
-      <ul
-        css={styles.eventsList}
-        data-events-list
-      >
-        {events.map((calendarEvent) => (
+      <ul css={styles.eventsList} data-events-list>
+        {filteredEventsForCurrentDay?.map((calendarEvent) => (
           <li
             key={calendarEvent.id}
             draggable="true"
