@@ -28,17 +28,7 @@ export const MonthGrid = () => {
 
   // Drag & drop
   React.useEffect(() => {
-    const events = document.querySelectorAll("[data-event]");
     const dayCells = document.querySelectorAll("[data-day]");
-
-    const eventsDragStartHandler = (event: Element) => {
-      event.classList.add("dragging");
-    };
-
-    const eventsDragEndHandler = (event: Element) => {
-      event.classList.remove("dragging");
-      setDraggingEventId(event.getAttribute("data-event-id")!);
-    };
 
     const dayCellDragOverHandler = (ev: Event, dayCell: Element) => {
       ev.preventDefault();
@@ -56,7 +46,7 @@ export const MonthGrid = () => {
       }
     };
 
-    const dragEndHandler = () => {
+    const dayDragEndHandler = () => {
       dayCells.forEach((dayCell) => {
         const eventsInDay: { eventId: string; newEventDate: string }[] = [];
         const eventsList = dayCell
@@ -83,36 +73,23 @@ export const MonthGrid = () => {
       });
     };
 
-    events.forEach((event) => {
-      event.addEventListener("dragstart", () => eventsDragStartHandler(event));
-      event.addEventListener("dragend", () => eventsDragEndHandler(event));
-    });
-
     dayCells.forEach((dayCell) => {
       dayCell.addEventListener("dragover", (ev) =>
         dayCellDragOverHandler(ev, dayCell),
       );
 
-      dayCell.addEventListener("dragend", dragEndHandler);
+      dayCell.addEventListener("dragend", dayDragEndHandler);
     });
 
     return () => {
-      const events = document.querySelectorAll("[data-event]");
       const dayCells = document.querySelectorAll("[data-day]");
-
-      events.forEach((event) => {
-        event.removeEventListener("dragstart", () =>
-          eventsDragStartHandler(event),
-        );
-        event.removeEventListener("dragend", () => eventsDragEndHandler(event));
-      });
 
       dayCells.forEach((dayCell) => {
         dayCell.removeEventListener("dragover", (ev) =>
           dayCellDragOverHandler(ev, dayCell),
         );
 
-        dayCell.removeEventListener("dragend", dragEndHandler);
+        dayCell.removeEventListener("dragend", dayDragEndHandler);
       });
     };
   }, []);

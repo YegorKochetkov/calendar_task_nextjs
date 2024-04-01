@@ -13,6 +13,7 @@ import {
   CalendarEvent,
   setSelectedCalendarEvent,
 } from "@/stores/eventsStore";
+import { setDraggingEventId } from "@/stores/dragNDropStateStore";
 
 const styles = {
   eventsList: css({
@@ -90,6 +91,18 @@ export const EventsList = React.memo(
       showModal("addEventModal");
     };
 
+    const eventsDragStartHandler = (event: React.DragEvent<HTMLLIElement>) => {
+      event.currentTarget.classList.add("dragging");
+    };
+
+    const eventsDragEndHandler = (
+      event: React.DragEvent<HTMLLIElement>,
+      calendarEventId: string,
+    ) => {
+      setDraggingEventId(calendarEventId);
+      event.currentTarget.classList.remove("dragging");
+    };
+
     return (
       <ul css={styles.eventsList} data-events-list>
         {filteredEventsForCurrentDay?.map((calendarEvent) => (
@@ -104,6 +117,8 @@ export const EventsList = React.memo(
               } as React.CSSProperties
             }
             onClick={(ev) => handleEventClick(ev, calendarEvent)}
+            onDragStart={(ev) => eventsDragStartHandler(ev)}
+            onDragEnd={(ev) => eventsDragEndHandler(ev, calendarEvent.id)}
           >
             {calendarEvent.title}
           </li>
