@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import React from "react";
 import { css } from "@emotion/react";
-import { useStore } from "@nanostores/react";
 
 import { MonthGridHeader } from "./monthGridHeader";
 import { MonthGridCells } from "./monthGridCells";
@@ -12,9 +11,7 @@ import {
   setDraggingEventId,
   setDraggingEventNextDate,
 } from "@/stores/dragNDropStateStore";
-import {
-  updateCalendarEventDate,
-} from "@/stores/eventsStore";
+import { updateCalendarEventDate } from "@/stores/eventsStore";
 
 const styles = {
   monthSection: css({
@@ -61,7 +58,7 @@ export const MonthGrid = () => {
 
     const dragEndHandler = () => {
       dayCells.forEach((dayCell) => {
-        const eventsInDay: { eventId: string, newEventDate: string }[] = [];
+        const eventsInDay: { eventId: string; newEventDate: string }[] = [];
         const eventsList = dayCell
           .querySelector("[data-events-list]")
           ?.querySelectorAll("[data-event]");
@@ -74,7 +71,7 @@ export const MonthGrid = () => {
 
           const data = {
             eventId,
-            newEventDate
+            newEventDate,
           };
 
           eventsInDay.push(data);
@@ -98,7 +95,6 @@ export const MonthGrid = () => {
 
       dayCell.addEventListener("dragend", dragEndHandler);
     });
-
 
     return () => {
       const events = document.querySelectorAll("[data-event]");
