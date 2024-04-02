@@ -44,13 +44,9 @@ export function addCalendarEvent(event: CalendarEvent) {
 export function updateCalendarEvent(event: CalendarEvent) {
 	let events = $calendarEvents.get();
 
-	for (let ev of events) {
-		if (ev.id === event.id) {
-			ev = event;
-		}
-	}
+	const updatedEvents = events.map((ev) => (ev.id === event.id ? event : ev));
 
-	$calendarEvents.set([...events]);
+	$calendarEvents.set([...updatedEvents]);
 }
 
 export function updateCalendarEventDate(date: string, eventId: string) {

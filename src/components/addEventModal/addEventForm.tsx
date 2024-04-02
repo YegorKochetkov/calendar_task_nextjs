@@ -73,6 +73,7 @@ export const AddEventForm = ({
   labelColor: string;
   onSetLabelColor: (labelColor: string) => void;
 }) => {
+  console.log('🚀 ~ labelColor:', labelColor);
   return (
     <form css={styles.dialogForm} id="addEventForm">
       <label>
@@ -98,7 +99,7 @@ export const AddEventForm = ({
               value={label}
               hidden
               aria-hidden="false"
-              defaultChecked={labelColor === label}
+              checked={labelColor === label}
               onClick={() => onSetLabelColor(label)}
             />
             <span

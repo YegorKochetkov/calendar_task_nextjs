@@ -28,26 +28,23 @@ export const Modal = ({
   isOpen: boolean;
 }) => {
   const dialogRef = React.useRef<HTMLDialogElement | null>(null);
+  const clickEscHandler = (ev: React.KeyboardEvent<HTMLDialogElement>) => {
+    if (ev.key === "Escape") {
+      closeModals();
+      setSelectedCalendarEvent(null);
+    }
+  };
 
   React.useEffect(() => {
     isOpen ? dialogRef.current?.showModal() : dialogRef.current?.close();
   }, [ dialogRef, isOpen ]);
 
-  React.useEffect(() => {
-    document.addEventListener("keydown", (ev) => {
-      ev.key === "Escape" && closeModals();
-      setSelectedCalendarEvent(null);
-    });
-
-    return () =>
-      document.removeEventListener("keydown", (ev) => {
-        ev.key === "Escape" && closeModals();
-        setSelectedCalendarEvent(null);
-      });
-  }, []);
-
   return (
-    <dialog ref={dialogRef} css={styles.dialog}>
+    <dialog
+      ref={dialogRef}
+      css={styles.dialog}
+      onKeyDownCapture={(ev) => clickEscHandler(ev)}
+    >
       {children}
     </dialog>
   );

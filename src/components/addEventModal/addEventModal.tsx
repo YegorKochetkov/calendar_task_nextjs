@@ -65,10 +65,8 @@ export const AddEventModal = () => {
     };
 
     selectedEvent
-      ? updateCalendarEvent(newEvent.date, newEvent)
-      : addCalendarEvent(newEvent.date, newEvent);
-    setTitle("");
-    setLabelColor(labelsColors[ 0 ]);
+      ? updateCalendarEvent(newEvent)
+      : addCalendarEvent(newEvent);
     setSelectedCalendarEvent(null);
     closeModal("addEventModal");
   };
@@ -79,7 +77,7 @@ export const AddEventModal = () => {
   };
 
   const deleteModalHandler = () => {
-    deleteCalendarEvent(selectedEvent?.date!, selectedEvent?.id!);
+    deleteCalendarEvent(selectedEvent?.id!);
     setSelectedCalendarEvent(null);
     closeModal("addEventModal");
   };
