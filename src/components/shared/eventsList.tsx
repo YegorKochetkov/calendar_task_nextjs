@@ -40,9 +40,11 @@ export const EventsList = React.memo(
         const dateFilter =
           new Date(event.date).toDateString() ===
           new Date(currentDay).toDateString();
+
         const queryFilter = event.title
           .toLocaleLowerCase()
           .includes(calendarEventsQueryFilter.toLocaleLowerCase());
+
         const labelFilter = calendarEventsLabelFilter
           ? event.labelColor === calendarEventsLabelFilter
           : true;

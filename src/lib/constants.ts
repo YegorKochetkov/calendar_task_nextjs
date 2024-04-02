@@ -1,5 +1,3 @@
-import { CalendarEvent } from "@/stores/eventsStore";
-
 export const labelsColors = [
 	"purple",
 	"green",

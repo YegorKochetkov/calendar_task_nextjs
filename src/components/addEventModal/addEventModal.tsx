@@ -64,9 +64,7 @@ export const AddEventModal = () => {
       date: new Date(selectedDay).toISOString(),
     };
 
-    selectedEvent
-      ? updateCalendarEvent(newEvent)
-      : addCalendarEvent(newEvent);
+    selectedEvent ? updateCalendarEvent(newEvent) : addCalendarEvent(newEvent);
     closeModal("addEventModal");
     setSelectedCalendarEvent(null);
     setTitle("");
@@ -84,9 +82,6 @@ export const AddEventModal = () => {
 
   React.useEffect(() => {
     addEventModal === "close" && setSelectedCalendarEvent(null);
-  }, [ addEventModal ]);
-
-  React.useEffect(() => {
     setOpenAddEventModal(addEventModal === "show");
   }, [ addEventModal ]);
 

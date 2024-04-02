@@ -52,15 +52,6 @@ export const getWeekDaysName = (
 	return days;
 };
 
-export function createExampleEvents() {
-	return Array.from({ length: 4 }).map((_, index) => ({
-		id: index.toString(),
-		title: `Event ${index}`,
-		labelColor: labelsColors[index],
-		date: new Date().toISOString(),
-	}));
-}
-
 export function getDragAfterElement(eventsList: Element, y: number) {
 	const events: Element[] = Array.from(
 		eventsList.querySelectorAll("[data-event]:not(.dragging)"),

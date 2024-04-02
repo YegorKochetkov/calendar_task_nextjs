@@ -28,6 +28,7 @@ export const Modal = ({
   isOpen: boolean;
 }) => {
   const dialogRef = React.useRef<HTMLDialogElement | null>(null);
+
   const clickEscHandler = (ev: React.KeyboardEvent<HTMLDialogElement>) => {
     if (ev.key === "Escape") {
       closeModals();
