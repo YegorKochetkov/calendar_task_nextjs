@@ -67,20 +67,24 @@ export const AddEventModal = () => {
     selectedEvent
       ? updateCalendarEvent(newEvent)
       : addCalendarEvent(newEvent);
-    setSelectedCalendarEvent(null);
     closeModal("addEventModal");
+    setSelectedCalendarEvent(null);
+    setTitle("");
+    setLabelColor(labelsColors[ 0 ]);
   };
 
   const cancelModalHandler = () => {
-    setSelectedCalendarEvent(null);
     closeModal("addEventModal");
   };
 
   const deleteModalHandler = () => {
     deleteCalendarEvent(selectedEvent?.id!);
-    setSelectedCalendarEvent(null);
     closeModal("addEventModal");
   };
+
+  React.useEffect(() => {
+    addEventModal === "close" && setSelectedCalendarEvent(null);
+  }, [ addEventModal ]);
 
   React.useEffect(() => {
     setOpenAddEventModal(addEventModal === "show");
@@ -89,6 +93,7 @@ export const AddEventModal = () => {
   React.useEffect(() => {
     setTitle(selectedEvent ? selectedEvent.title : "");
     setLabelColor(selectedEvent ? selectedEvent.labelColor : labelsColors[ 0 ]);
+    console.log(selectedEvent)
   }, [ selectedEvent ]);
 
   return (
