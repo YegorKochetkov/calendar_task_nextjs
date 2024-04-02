@@ -93,7 +93,6 @@ export const AddEventModal = () => {
   React.useEffect(() => {
     setTitle(selectedEvent ? selectedEvent.title : "");
     setLabelColor(selectedEvent ? selectedEvent.labelColor : labelsColors[ 0 ]);
-    console.log(selectedEvent)
   }, [ selectedEvent ]);
 
   return (
