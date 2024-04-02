@@ -3,13 +3,24 @@ import React from "react";
 import { css } from "@emotion/react";
 
 import { useLocale } from "@/hooks/useLocale";
-import { isFirstDayOfMonth, isLastDayOfMonth } from "@/lib/utils";
+import {
+  getDragAfterElement,
+  isFirstDayOfMonth,
+  isLastDayOfMonth,
+} from "@/lib/utils";
 import { updateSelectedDay } from "@/stores/selectedDayStore";
 import { showModal } from "@/stores/modalsStore";
+import {
+  getDayFromDragStart,
+  getDraggingEventId,
+  getDraggingEventNextDate,
+  setDayFromDragStart,
+  setDraggingEventNextDate,
+} from "@/stores/dragNDropStateStore";
 
 import { EventsList } from "./eventsList";
 import { HolidayList } from "./holidaysList";
-import { setDayFromDragStart } from "@/stores/dragNDropStateStore";
+import { updateCalendarEventDate } from "@/stores/eventsStore";
 
 const styles = {
   dayCell: css({
@@ -111,7 +122,44 @@ export const Day = React.memo(
 
     const dayDragStartCaptureHandler = () => {
       setDayFromDragStart(currentDay);
-    }
+    };
+
+    const dayDragOverHandler = (ev: React.DragEvent<HTMLButtonElement>) => {
+      ev.preventDefault();
+      const eventsList = ev.currentTarget.querySelector("[data-events-list]");
+      const afterElement = getDragAfterElement(eventsList!, ev.clientY);
+      const draggingElement = document.querySelector(".dragging");
+
+      setDraggingEventNextDate(ev.currentTarget.getAttribute("data-day-date")!);
+      const dayFromDragStart = getDayFromDragStart();
+      const dayDragOver = ev.currentTarget.getAttribute("data-day-date");
+
+      if (dayFromDragStart === dayDragOver) {
+        if (afterElement === null && draggingElement) {
+          eventsList?.appendChild(draggingElement);
+        } else if (draggingElement) {
+          eventsList?.insertBefore(draggingElement, afterElement);
+        }
+      }
+    };
+
+    const dayDragEndCaptureHandler = (
+      ev: React.DragEvent<HTMLButtonElement>,
+    ) => {
+      const eventsList = ev.currentTarget
+        .querySelector("[data-events-list]")
+        ?.querySelectorAll("[data-event]");
+
+      if (!eventsList || eventsList?.length === 0) return;
+
+      Array.from(eventsList).forEach(() => {
+        const draggingEventId = getDraggingEventId();
+        const newEventDate = getDraggingEventNextDate();
+
+        draggingEventId &&
+          updateCalendarEventDate(newEventDate, draggingEventId);
+      });
+    };
 
     return (
       <button
@@ -125,6 +173,8 @@ export const Day = React.memo(
         ]}
         onClick={addEventModalHandler}
         onDragStartCapture={dayDragStartCaptureHandler}
+        onDragOver={(ev) => dayDragOverHandler(ev)}
+        onDragEndCapture={(ev) => dayDragEndCaptureHandler(ev)}
       >
         <span hidden aria-hidden="false">
           Add calendar event
