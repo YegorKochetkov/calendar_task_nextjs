@@ -73,7 +73,6 @@ export const AddEventForm = ({
   labelColor: string;
   onSetLabelColor: (labelColor: string) => void;
 }) => {
-  console.log('🚀 ~ labelColor:', labelColor);
   return (
     <form css={styles.dialogForm} id="addEventForm">
       <label>
