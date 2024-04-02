@@ -5,10 +5,7 @@ import { css } from "@emotion/react";
 
 import { showModal } from "@/stores/modalsStore";
 import { updateSelectedDay } from "@/stores/selectedDayStore";
-import {
-  CalendarEvent,
-  setSelectedCalendarEvent,
-} from "@/stores/eventsStore";
+import { CalendarEvent, setSelectedCalendarEvent } from "@/stores/eventsStore";
 import { setDraggingEventId } from "@/stores/dragNDropStateStore";
 
 const styles = {
@@ -36,16 +33,17 @@ export const Event = React.memo(
       showModal("addEventModal");
     };
 
-    const eventsDragStartHandler = (event: React.DragEvent<HTMLLIElement>) => {
-      event.currentTarget.classList.add("dragging");
-    };
-
-    const eventsDragEndHandler = (
+    const eventsDragStartHandler = (
       event: React.DragEvent<HTMLLIElement>,
       calendarEventId: string,
     ) => {
+      event.currentTarget.classList.add("dragging");
       setDraggingEventId(calendarEventId);
+    };
+
+    const eventsDragEndHandler = (event: React.DragEvent<HTMLLIElement>) => {
       event.currentTarget.classList.remove("dragging");
+      setDraggingEventId("");
     };
 
     return (
@@ -61,12 +59,11 @@ export const Event = React.memo(
         }
         css={styles.event}
         onClick={(ev) => handleEventClick(ev, calendarEvent)}
-        onDragStart={(ev) => eventsDragStartHandler(ev)}
-        onDragEnd={(ev) => eventsDragEndHandler(ev, calendarEvent.id)}
+        onDragStart={(ev) => eventsDragStartHandler(ev, calendarEvent.id)}
+        onDragEnd={(ev) => eventsDragEndHandler(ev)}
       >
         {calendarEvent.title}
       </li>
-
     );
   },
 );

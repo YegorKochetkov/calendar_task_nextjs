@@ -63,9 +63,9 @@ export const MonthGrid = () => {
           const draggingEventId = getDraggingEventId();
           const newEventDate = getDraggingEventNextDate();
 
-          draggingEventId && updateCalendarEventDate(newEventDate, draggingEventId);
+          draggingEventId &&
+            updateCalendarEventDate(newEventDate, draggingEventId);
         });
-
       });
     };
 
