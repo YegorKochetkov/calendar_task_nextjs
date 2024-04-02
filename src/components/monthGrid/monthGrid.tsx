@@ -7,8 +7,9 @@ import { MonthGridCells } from "./monthGridCells";
 import { fetchHoliday } from "@/lib/fetchHolidays";
 import { getDragAfterElement } from "@/lib/utils";
 import {
+  getDayFromDragStart,
+  getDraggingEventId,
   getDraggingEventNextDate,
-  setDraggingEventId,
   setDraggingEventNextDate,
 } from "@/stores/dragNDropStateStore";
 import { updateCalendarEventDate } from "@/stores/eventsStore";
@@ -38,38 +39,33 @@ export const MonthGrid = () => {
       const draggable = document.querySelector(".dragging");
 
       setDraggingEventNextDate(dayCell.getAttribute("data-day-date")!);
+      const dayFromDragStart = getDayFromDragStart();
+      const dayDragOver = dayCell.getAttribute("data-day-date");
 
-      if (afterElement === null && draggable) {
-        eventsLists?.appendChild(draggable);
-      } else if (draggable) {
-        eventsLists?.insertBefore(draggable, afterElement);
+      if (dayFromDragStart === dayDragOver) {
+        if (afterElement === null && draggable) {
+          eventsLists?.appendChild(draggable);
+        } else if (draggable) {
+          eventsLists?.insertBefore(draggable, afterElement);
+        }
       }
     };
 
     const dayDragEndHandler = () => {
       dayCells.forEach((dayCell) => {
-        const eventsInDay: { eventId: string; newEventDate: string }[] = [];
         const eventsList = dayCell
           .querySelector("[data-events-list]")
           ?.querySelectorAll("[data-event]");
 
         if (!eventsList || eventsList?.length === 0) return;
 
-        Array.from(eventsList).forEach((event) => {
+        Array.from(eventsList).forEach(() => {
+          const draggingEventId = getDraggingEventId();
           const newEventDate = getDraggingEventNextDate();
-          const eventId = event.getAttribute("data-event-id")!;
 
-          const data = {
-            eventId,
-            newEventDate,
-          };
-
-          eventsInDay.push(data);
+          draggingEventId && updateCalendarEventDate(newEventDate, draggingEventId);
         });
 
-        for (let event of eventsInDay) {
-          updateCalendarEventDate(event.newEventDate, event.eventId);
-        }
       });
     };
 

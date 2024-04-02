@@ -9,6 +9,7 @@ import { showModal } from "@/stores/modalsStore";
 
 import { EventsList } from "./eventsList";
 import { HolidayList } from "./holidaysList";
+import { setDayFromDragStart } from "@/stores/dragNDropStateStore";
 
 const styles = {
   dayCell: css({
@@ -108,6 +109,9 @@ export const Day = React.memo(
       showModal("addEventModal");
     };
 
+    const dayDragStartCaptureHandler = () => {
+      setDayFromDragStart(currentDay);
+    }
 
     return (
       <button
@@ -120,6 +124,7 @@ export const Day = React.memo(
           isSelectedDay && styles.selectedDay,
         ]}
         onClick={addEventModalHandler}
+        onDragStartCapture={dayDragStartCaptureHandler}
       >
         <span hidden aria-hidden="false">
           Add calendar event
